@@ -1,0 +1,32 @@
+@startuml pages
+
+title Pages Diagram
+
+skinparam componentStyle rectangle
+
+
+component "Main and Games\n(/index.html)" as M
+component "User Creation\n(/newuser.html)" as UC
+component "User Modification\n(/user/{username}.html)" as UM
+component "User Login\n(/login.html)" as UL
+component "Matchmaking\n(/matchmaking/{game}/{ticket})" as MM
+component "Connect4\n(/games/connect4/{handle}.html)" as C4
+
+M -left-> UC
+M <-right- UC
+
+M -left-> UL
+M <-right- UL
+
+M -right-> UM: "(requires login)"
+UM -left-> M
+
+M -down-> MM: "(requires login)"
+MM -up-> M
+
+
+M --> C4: "(requires login)\n(open game)"
+MM -down-> C4
+C4 --> M
+
+@enduml
