@@ -1,0 +1,21 @@
+@startuml workflow_1
+
+title Login; Modify user data; Logout
+
+group login
+Client -> Server: Login with valid credentials
+Server -> Client: Provide session token
+end
+
+group user_data
+Client -> Server: Asks for user data
+Server -> Client: Populates page with user data
+Client -> Server: Submits user data modification
+Server -> Client: Sends acknowledgement
+end
+
+group logout
+Client -> Client: Drops session token
+end
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml workflow_4
+
+title Login; Attempts matchmaking; Gets game;\nPlays game to completion; Logout
+
+group login
+Client -> Server: Login with valid credentials
+Server -> Client: Provide session token
+end
+
+group matchmaking
+Client -> Server: Request matchmaking ticket
+Server -> Client: Send matchmaking ticket
+Client -> Server: Polls for update (xN)
+Server -> Client: Sends waiting notification (xN)
+Client -> Server: Polls for update
+Server -> Client: Sends game handle
+end
+
+group game_move
+Client -> Server: Polls game status (xN)
+Server -> Client: Sends waiting notification (xN)
+Client -> Server: Polls game status
+Server -> Client: Sends move notification
+Client -> Server: Makes valid move
+Server -> Client: Move acknknowledgement
+end
+
+group game_end
+Client -> Server: Polls game status
+Server -> Client: Sends final status
+end
+
+group logout
+Client -> Client: Drops session token
+end
+
+@enduml

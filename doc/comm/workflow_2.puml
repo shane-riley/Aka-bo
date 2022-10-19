@@ -1,0 +1,23 @@
+@startuml workflow_2
+
+title Login; Attempts matchmaking; Cancels matchmaking
+
+group login
+Client -> Server: Login with valid credentials
+Server -> Client: Provide session token
+end
+
+group matchmaking
+Client -> Server: Request matchmaking ticket
+Server -> Client: Send matchmaking ticket
+Client -> Server: Polls for update (xN)
+Server -> Client: Sends waiting notification (xN)
+Client -> Server: Cancels matchmaking
+Server -> Client: Cancellation acknowledgement
+end
+
+group logout
+Client -> Client: Drops session token
+end
+
+@enduml
