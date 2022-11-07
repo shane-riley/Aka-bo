@@ -1,16 +1,19 @@
 from google.cloud import datastore
 from typing import List
 
+
 class InvalidInputException(Exception):
     pass
+
 
 class DuplicateException(Exception):
     pass
 
+
 class Store:
     """Baseclass for Storing objects 
     """
-    
+
     def __init__(self):
         pass
 
@@ -21,10 +24,37 @@ class Store:
         """
         return datastore.Client()
 
-    def put(self, Model, obj: object):
-        """Put a generic object
+    def update_object(self, Model, obj, key, value):
+        """
+        Update object of kind=Model.KIND
+
+        Args:
+            Model (class): classname of kind
+            obj (object): object to write
+            key (string): key to match
+            value (string): value to match
+        """
+
+        # Pull object
+        en = self.get_entities_by_field(Model, key, value)[0]
+        en.update(obj.__dict__)
+        client = self.get_client()
+        client.put(en)
+
+    def post_object(self, Model, obj: object):
+        """
+        Put object of kind=Model.KIND
+        This includes creation only
+
+        Args:
+            Model (class): classname of kind
+            obj (object): object to put 
+
+        Returns:
+            List[object]: List of backend objects
         """
         client = self.get_client()
+        existing = self.get
         key = client.key(Model.KIND)
         entity = datastore.Entity(key)
         entity.update(obj.__dict__)
@@ -32,16 +62,76 @@ class Store:
         print("Put: {}".format(obj))
         return obj
 
-    def get_by_field(self, Model, key: str, value: str):
+    def get_objects_by_field(self, Model, key: str, value: str):
+        """
+        Get backend objects of kind=Model.KIND, given a key=value match
+
+        Args:
+            Model (class): classname of kind
+            key (str): key to match
+            value (any): value to match 
+
+        Returns:
+            List[object]: List of backend objects
+        """
+        objs = self.convert_entities_to_objects(Model,
+                                                self.get_entities_by_field(Model, key, value))
+        print('GET: {}'.format(objs))
+        return objs
+
+    def convert_entities_to_objects(self, Model, entities):
+        """
+        Convert entities to objects
+
+        Args:
+            Model (class): class to convert to
+            entities (List[Entity]): List of entities
+
+        Returns:
+            List[object]: List of objects of type Model
+        """
+
+        items = []
+        for en in entities:
+            item = Model()
+            for k, y in en.items():
+                setattr(item, k, y)
+            items.append(item)
+        return items
+
+    def get_entities_by_field(self, Model, key: str, value: str):
+        """
+        Get entities of kind=Model.KIND, given a key=value match
+
+        Args:
+            Model (class): classname of kind
+            key (str): String key
+            value (any): Value to match 
+
+        Returns:
+            List[Entity]: List of entites
+        """
         client = self.get_client()
         query = client.query(kind=Model.KIND)
         query.add_filter(key, '=', value)
-        items = []
-        for en in query.fetch():
-            item = Model()
-            for k,y in en.items():
-                setattr(item,k,y)
-            items.append(item)
-            print("Get: {}".format(item))
-        return items
-        
+        return list(query.fetch())
+
+    def delete_by_field(self, Model, key: str, value: any) -> List[object]:
+        """
+        Delete entities of kind=Model.KIND, given a key=value match
+
+        Args:
+            Model (class): classname of kind
+            key (str): String key
+            value (any): Value to match 
+
+        Returns:
+            List[object]: List of dropped objects
+        """
+        client = self.get_client()
+        entities = self.get_entities_by_field(Model, key, value)
+        objs = self.convert_entities_to_objects(Model, entities)
+        for en in entities:
+            client.delete(en)
+        print('DELETE: {}'.format(objs))
+        return objs
