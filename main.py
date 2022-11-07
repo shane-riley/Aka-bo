@@ -20,7 +20,12 @@ if __name__ == '__main__':
 
 @app.route('/send', methods=['POST', 'GET'])
 def checkUser():
-    id_token = flask.request.form['token']
+    # return flask.redirect("/s/WelcomePage.html", code=302)
+    # result = flask.request.json
+    result = flask.request.form
+
+    id_token = result['token']
+    # id_token = id_token['value']
     # id_token = id_token[2]
     # return flask.render_template('index.html')
     # id_token comes from the client app (shown above)
