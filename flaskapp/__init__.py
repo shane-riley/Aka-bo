@@ -2,7 +2,7 @@
 from main import app
 
 # Grab default storer
-from . import storer
+from . import helpers
 
 # Load routes
 from . import routes
