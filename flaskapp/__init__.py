@@ -1,14 +1,8 @@
 # Grab app from main
 from main import app
 
-# Load models
-from . import models
-
-# Load storage
-from . import storage
-
-# Load services
-from . import services
+# Grab default storer
+from . import storer
 
 # Load routes
 from . import routes
