@@ -31,7 +31,7 @@ class UserStore(Store):
     def __init__(self):
         pass
 
-    def post(self, user: User) -> User:
+    def post_user(self, user: User) -> User:
         """
         Add a user to datastore
 
@@ -109,8 +109,9 @@ class UserService:
             user (User): User created
 
         Throws:
-            Exception: If user missing required field (email, username, pw),
-            or if user exists
+            DuplicateException: If username exists
+            InvalidInputException: If other input issue
+            Exception: Other errors
         """
 
         # Make sure user's inputs exist
@@ -123,7 +124,7 @@ class UserService:
             raise DuplicateException
 
         # Add user
-        return self.user_store.post(user)
+        return self.user_store.post_user(user)
 
     def update_user(self, user: User) -> User:
         """
@@ -180,7 +181,6 @@ user_service = UserService(user_store)
 
 # User API routes
 # POST /user : Make a user
-
 
 @app.route(API_ROOT+"/user", methods=['POST'])
 def create_user():

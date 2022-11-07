@@ -1,5 +1,6 @@
 from google.cloud import datastore
 from typing import List
+from datetime import datetime
 
 
 class InvalidInputException(Exception):
@@ -9,6 +10,7 @@ class InvalidInputException(Exception):
 class DuplicateException(Exception):
     pass
 
+SUPPORTED_GAMES = ['Connect4']
 
 class Store:
     """Baseclass for Storing objects 
@@ -79,6 +81,39 @@ class Store:
         print('GET: {}'.format(objs))
         return objs
 
+    def get_objects(self, Model):
+        """
+        Get backend objects of kind=Model.KIND, given a key=value match
+
+        Args:
+            Model (class): classname of kind
+
+        Returns:
+            List[object]: List of backend objects
+        """
+        objs = self.convert_entities_to_objects(Model,
+                                                self.get_entities(Model))
+        print('GET: {}'.format(objs))
+        return objs
+
+    def get_object_by_field(self, Model, key: str, value: str):
+        """
+        Get backend object of kind=Model.KIND, given a key=value match
+
+        Args:
+            Model (class): classname of kind
+            key (str): key to match
+            value (any): value to match 
+
+        Returns:
+            object: First backend match
+        """
+        objs = self.convert_entities_to_objects(Model,
+                                                self.get_entities_by_field(Model, key, value))
+        obj = objs[0] if len(objs) else None
+        print('GET: {}'.format(obj))
+        return obj
+
     def convert_entities_to_objects(self, Model, entities):
         """
         Convert entities to objects
@@ -102,6 +137,8 @@ class Store:
     def get_entities_by_field(self, Model, key: str, value: str):
         """
         Get entities of kind=Model.KIND, given a key=value match
+        
+        NOTE: Expired tickets disappear from this view
 
         Args:
             Model (class): classname of kind
@@ -114,6 +151,27 @@ class Store:
         client = self.get_client()
         query = client.query(kind=Model.KIND)
         query.add_filter(key, '=', value)
+        if hasattr(Model, 'expires'):
+            query.add_filter('expires', '>', datetime.now().timestamp())
+        return list(query.fetch())
+    
+    def get_entities(self, Model):
+        """
+        Get entities of kind=Model.KIND, given a key=value match
+        
+        NOTE: Expired tickets disappear from this view
+
+        Args:
+            Model (class): classname of kind
+
+
+        Returns:
+            List[Entity]: List of entites
+        """
+        client = self.get_client()
+        query = client.query(kind=Model.KIND)
+        if hasattr(Model, 'expires'):
+            query.add_filter('expires', '>', datetime.now().timestamp())
         return list(query.fetch())
 
     def delete_by_field(self, Model, key: str, value: any) -> List[object]:
