@@ -108,7 +108,7 @@ class UserService:
         Returns:
             user (User): User created
 
-        Throws:
+        Raises:
             DuplicateException: If username exists
             InvalidInputException: If other input issue
             Exception: Other errors
@@ -136,7 +136,7 @@ class UserService:
         Returns:
             user (User): User modified
 
-        Throws:
+        Raises:
             Exception: If user missing required field (email, username, pw),
             or if user exists
         """
@@ -181,7 +181,6 @@ user_service = UserService(user_store)
 
 # User API routes
 # POST /user : Make a user
-
 @app.route(API_ROOT+"/user", methods=['POST'])
 def create_user():
     # Three inputs: email, username, encrypted PW

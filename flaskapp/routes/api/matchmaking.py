@@ -58,6 +58,11 @@ class MatchTicket:
 
 # Match ticket storer
 class MatchStore(Store):
+    """
+    Class for storing MatchTickets
+
+    Inherits from Store
+    """
 
     def post_ticket(self, ticket: MatchTicket) -> MatchTicket:
         """
@@ -87,7 +92,7 @@ class MatchStore(Store):
     
     def get_by_uuid(self, uuid: str) -> Optional[MatchTicket]:
         """
-        Get Ticket matching uuid or None
+        Get Ticket matching uuid or None if no matches
 
         Args:
             uuid (str): Unique identifier

@@ -5,6 +5,6 @@ from main import app
 API_ROOT = "/api/v1"
 
 # Import api routes
-from . import game
-from . import matchmaking
+# from . import game
+# from . import matchmaking
 from . import user
