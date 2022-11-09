@@ -1,9 +1,183 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Aka-bo!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-  </body>
+
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Board Demo</h2>
+
+  <!-- Begin Board -->
+
+
+  <table>
+    <tbody id="board">
+      <tr id="row-1">
+        <td>
+          <strong>
+            1
+          </strong>
+        </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr id="row-2">
+        <td>
+          <strong>
+            2
+          </strong>
+        </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr id="row-3">
+        <td>
+          <strong>
+            3
+          </strong>
+        </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr id="row-4">
+        <td>
+          <strong>
+            4
+          </strong>
+        </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr id="row-5">
+        <td>
+          <strong>
+            5
+          </strong>
+        </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr id="row-6">
+        <td>
+          <strong>
+            6
+          </strong>
+        </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <th> </th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+    </tfoot>
+  </table>
+  <!-- End Board -->
+
+  <form>
+    <label for="newState"> New State: </label>
+    <input type="text" id="newState">
+    <input type="submit" value="Submit">
+  </form>
+
+  <label for="col-input"> Column: </label>
+  <input type="text" id="col-input">
+  <label for="row-input"> Row: </label>
+  <input type="text" id="row-input">
+  <button onclick="textToBoard()">Toggle x</button>
+
+  <script>
+
+
+    // IDEAS FOR MS2
+    // TODO: Implement drawBoard, so we can populate the board
+    // based on a hardcoded string
+
+
+    function drawBoard(boardString) {
+      
+      // Given the board state represented by
+      // boardString, update the board on screen
+
+      // .getElementById
+      // 6 rows, 7 cols: 42 cells
+
+
+    }
+
+    function textToBoard() {
+
+      row = parseInt(document.getElementById('row-input').value) -1;
+      col = parseInt(document.getElementById('col-input').value) -1;
+
+      row_element = document.getElementById(`row-${row+1}`);
+      cell_element = row_element.querySelector(`:nth-child(${col+2})`);
+
+      // Toggle
+      if (cell_element.innerHTML === 'x') {
+        cell_element.innerHTML = ' ';
+      } else {
+        cell_element.innerHTML = 'x';
+      }
+    }
+
+  </script>
+
+</body>
+
 </html>
