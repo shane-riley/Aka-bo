@@ -188,9 +188,9 @@ def create_user():
     # Check existence and then pass into service
 
     user = User(
-        username=request.args.get("username"),
-        email=request.args.get("email"),
-        encrypted_password=request.args.get("encrypted_password")
+        username=request.json.get("username"),
+        email=request.json.get("email"),
+        encrypted_password=request.json.get("encrypted_password")
     )
 
     try:
