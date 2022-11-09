@@ -1,12 +1,12 @@
 from .__init__ import app, API_ROOT
 import flask
-from flask import abort, request
-from flaskapp.helpers import Store, InvalidInputException, DuplicateException
+from flask import abort, request, jsonify
+from flaskapp.helpers import Store, Model, InvalidInputException, DuplicateException
 from google.cloud import datastore
 from typing import List
 
 # Define User
-class User:
+class User(Model):
     """
     Model class for users
     """
@@ -18,6 +18,7 @@ class User:
         self.email = email
         self.encrypted_password = encrypted_password
         self.bio = bio
+        
 
 
 # Define User Storer
@@ -43,7 +44,7 @@ class UserStore(Store):
         """
         return super().post_object(User, user)
 
-    def update(self, user: User) -> User:
+    def update_user(self, user: User) -> User:
         """
         Update user that exists
 
@@ -77,7 +78,7 @@ class UserStore(Store):
         Returns:
             List[User]: Length=1 list of users
         """
-        return super().delete_by_field(User, 'username', username)
+        return super().delete_by_field(User, 'username', username)[0]
 
 
 # Define UserService
@@ -153,7 +154,7 @@ class UserService:
 
         # Update modifiable fields
         existing_user.bio = user.bio
-        return self.user_store.update(existing_user)
+        return self.user_store.update_user(existing_user)
 
     def delete_user(self, username: str) -> User:
         """
@@ -193,8 +194,8 @@ def create_user():
     )
 
     try:
-        user_service.create_user(user)
-        return flask.make_response("User Created.", 200)
+        u = user_service.create_user(user)
+        return flask.make_response(jsonify(u.serialize()), 200)
     except DuplicateException as e:
         print(e)
         return flask.make_response("User already exists.", 400)
@@ -217,8 +218,8 @@ def update_user():
     ) 
 
     try:
-        user_service.update_user(user)
-        return flask.make_response("User Updated.", 200)
+        u = user_service.update_user(user)
+        return flask.make_response(jsonify(u.serialize()), 200)
     except InvalidInputException as e:
         print(e)
         return flask.make_response("Invalid input.", 400)
@@ -234,8 +235,8 @@ def delete_user():
     username = request.args.get("username")
 
     try:
-        user_service.delete_user(username)
-        return flask.make_response("User Deleted.", 200)
+        u = user_service.delete_user(username)
+        return flask.make_response(jsonify(u.serialize()), 200)
     except InvalidInputException as e:
         print(e)
         return flask.make_response("Invalid input.", 400)

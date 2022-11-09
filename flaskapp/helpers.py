@@ -12,6 +12,24 @@ class DuplicateException(Exception):
 
 SUPPORTED_GAMES = ['Connect4']
 
+class Model:
+    """
+    BaseClass for Model objects
+    """
+
+    def serialize(self):
+        """
+        Make json representation
+
+        NOTE: Because of dynamic reasons, this method can see subclass attributes
+
+        Returns:
+            dictionary json response
+        """
+
+        # Use default
+        return self.__dict__
+
 class Store:
     """Baseclass for Storing objects 
     """
@@ -42,6 +60,7 @@ class Store:
         en.update(obj.__dict__)
         client = self.get_client()
         client.put(en)
+        return self.convert_entity_to_object(Model, en)
 
     def post_object(self, Model, obj: object):
         """
@@ -56,7 +75,6 @@ class Store:
             List[object]: List of backend objects
         """
         client = self.get_client()
-        existing = self.get
         key = client.key(Model.KIND)
         entity = datastore.Entity(key)
         entity.update(obj.__dict__)
@@ -133,6 +151,23 @@ class Store:
                 setattr(item, k, y)
             items.append(item)
         return items
+
+    def convert_entity_to_object(self, Model, en):
+        """
+        Convert entities to objects
+
+        Args:
+            Model (class): class to convert to
+            en (Entity): entity
+
+        Returns:
+            object: Object form
+        """
+
+        item = Model()
+        for k, y in en.items():
+            setattr(item, k, y)
+        return item
 
     def get_entities_by_field(self, Model, key: str, value: str):
         """
