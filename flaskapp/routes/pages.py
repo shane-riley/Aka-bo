@@ -1,5 +1,6 @@
 import flask
 from .__init__ import app
+from firebase_admin import auth 
 
 # Add pages api routes
 
@@ -63,3 +64,30 @@ def game_page(game, ticket):
     """
     # TODO: Implement me
     return login_page()
+
+# M2
+@app.route('/email')
+def root():
+    return flask.redirect("/s/email-password.html", code=302)
+
+@app.route('/send', methods=['POST', 'GET'])
+def checkUser():
+    # return flask.redirect("/s/WelcomePage.html", code=302)
+    # result = flask.request.json
+    result = flask.request.form
+
+    id_token = result['token']
+    # id_token = id_token['value']
+    # id_token = id_token[2]
+    # return flask.render_template('index.html')
+    # id_token comes from the client app (shown above)
+    try:
+        auth.verify_id_token(id_token)
+        return flask.redirect("/s/WelcomePage.html", code=302)
+    except:
+        return flask.redirect("/s/index.html", code=302)
+    # return flask.redirect("/s/WelcomePage.html", code=302)
+
+@app.route('/connect4')
+def game():
+    return flask.redirect("/s/connect4.html", code=302)
