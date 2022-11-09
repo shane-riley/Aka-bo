@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css?family=Inter:400|Iceland:400|Jacques+Francois:400");
+
+:root {
+    --yell: #f4cd00;
+    --blu: #476499;
+}
+
+html {
+    background-color: var(--blu);
+    background-size: cover;
+}
+
+.desktopscreen {
+    background-color: #476499;
+    border: 1px none;
+    height: 1024px;
+    mix-blend-mode: lighten;
+    overflow:hidden;
+    overflow-x: hidden;
+    position: relative;
+    width: 1440px;
+}
+
+.rectangle1 {
+    position: absolute;
+    width: 1394.18px;
+    height: 213px;
+    left: 0px;
+    top: 0px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0));
+}
+
+.mainheader {
+    position: absolute;
+    width: 1200px;
+    height: 120px;
+    left: 95px;
+    top: 49px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 77.8434px;
+    line-height: 154.52%;
+    color: #000000;
+
+}
+
+.rectangle2 {
+    position: absolute;
+    width: 1121px;
+    height: 408px;
+    left: 158px;
+    top: 406px;
+    background: #F4CD00;
+    background-blend-mode: darken;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 67px;
+}
+
+.choosegame {
+    position: absolute;
+    width: 700px;
+    height: 98px;
+    left: 318px;
+    top: 7px;
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 63.3962px;
+    line-height: 154.52%;
+    /* identical to box height, or 98px */
+    
+    
+    color: #000000;
+}
+
+.gamebutton {
+    position: absolute;
+    width: 283px;
+    height: 241px;
+    left: 420px;
+    top: 127px;
+}
+
+.con4pic {
+    position: absolute;
+    width: 233px;
+    height: 241px;
+    left: 25px;
+    top: 0px;
+    
+    background: url(https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fconnect-four_3367465&psig=AOvVaw0YKHECMJghhYFtqqGOEZL7&ust=1668058265570000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCMjsvbWvoPsCFQAAAAAdAAAAABAF);
+}
+
+.loginbutton {
+    position: absolute;
+    width: 376px;
+    height: 65px;
+    left: 532px;
+    top: 292px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 50px;
+}
+
+.rectangle3 {
+    position: absolute;
+    width: 376px;
+    height: 65px;
+    left: 0px;
+    top: 0px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background: #F4CD00;
+}
+
+.loginword {
+    position: absolute;
+    width: 305px;
+    height: 65px;
+    left: 35px;
+    top: 0px;
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 154.52%;
+    /* or 74px */
+    
+    text-align: center;
+    
+    color: #000000;
+}
+
