@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css?family=Inter:400|Iceland:400|Jacques+Francois:400");
+
+:root {
+    --yell: #f4cd00;
+    --blu: #476499;
+}
+
+body {
+    background-color: var(--blu);
+    background-size: cover;
+}
+.desktopscreen {
+
+    border: 1px none;
+    height: 1024px;
+
+    overflow:hidden;
+    overflow-x: hidden;
+    position: absolute;
+    width: 1440px;
+}
+
+.rectangle1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1394.18px;
+    height: 213px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+
+}
+
+.mainheader {
+    position: absolute;
+    width: 1200px;
+    height: 120px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 77.8434px;
+    line-height: 154.52%;
+    color: #000000;
+}
+
+.rectangle2 {
+    position: absolute;
+    width: 1121px;
+    height: 408px;
+    left: 158px;
+    top: 406px;
+    background: #F4CD00;
+    background-blend-mode: darken;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 67px;
+}
+
+.choosegame {
+    position: absolute;
+    width: 700px;
+    height: 98px;
+    left: 318px;
+    top: 7px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 63.3962px;
+    line-height: 154.52%;
+    color: #000000;
+}
+
+.gamebutton {
+    position: absolute;
+    width: 283px;
+    height: 241px;
+    left: 420px;
+    top: 127px;
+}
+
+.gamebutton:hover .overlay {
+    opacity: 1;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #417be4;
+}
+
+.con4pic {
+    position: absolute;
+    width: 233px;
+    height: 241px;
+    left: 25px;
+    top: 0px;
+    border-radius: 10px;
+
+}
+
+.overlaytext {
+    color: white;
+    font-family: 'Inter';
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+.loginbutton {
+    position: absolute;
+    width: 376px;
+    height: 65px;
+    left: 532px;
+    top: 292px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 50px;
+}
+
+.rectangle3 {
+    position: absolute;
+    width: 376px;
+    height: 65px;
+    left: 0px;
+    top: 0px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background: var(--yell);
+    border-radius: 50px;
+}
+
+.rectangle {
+    position: relative;
+    text-align: center;
+    padding: 5px;
+
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background-color: var(--yell);
+    color: var(--yell);
+    border-radius: 50px;
+}
+
+.yellow-text {
+    color: var(--yell);
+    font-family: 'Inter';
+}
+
+.loginword {
+    position: absolute;
+    width: 305px;
+    height: 65px;
+    left: 35px;
+    top: 0px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 154.52%;
+    text-align: center;
+    color: #000000;
+}
+
