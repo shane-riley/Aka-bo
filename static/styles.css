@@ -11,21 +11,20 @@ body {
 }
 .desktopscreen {
 
-    border: 1px none;
-    height: 1024px;
-
     overflow:hidden;
     overflow-x: hidden;
-    position: absolute;
-    width: 1440px;
+
 }
 
 .rectangle1 {
-    display: flex;
-    align-items: center;
+    /* align-items: center;
     justify-content: center;
     width: 1394.18px;
-    height: 213px;
+    height: 213px; */
+    width: 70vw;
+    height: 10vw;
+    align-items: center;
+    justify-content: center;
     background: #F4CD00;
     border-radius: 71.6455px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
@@ -34,15 +33,13 @@ body {
 
 .mainheader {
     position: absolute;
-    width: 1200px;
-    height: 120px;
-    left: 50%;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(0,-50%);
+
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 77.8434px;
+    font-size: 77px;
     line-height: 154.52%;
     color: #000000;
 }
@@ -80,6 +77,7 @@ body {
     height: 241px;
     left: 420px;
     top: 127px;
+    background-color: #000000;
 }
 
 .gamebutton:hover .overlay {
