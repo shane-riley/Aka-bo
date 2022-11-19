@@ -8,6 +8,7 @@
 body {
     background-color: var(--blu);
     background-size: cover;
+    min-width: 800px;
 }
 .desktopscreen {
 
@@ -21,26 +22,33 @@ body {
     justify-content: center;
     width: 1394.18px;
     height: 213px; */
+    position: relative;
+    margin: auto;
     width: 70vw;
     height: 10vw;
+    text-align: center;
+    min-width: 800px;
+    min-height: 150px;
     align-items: center;
+    font-size: 75px;
     justify-content: center;
     background: #F4CD00;
-    border-radius: 71.6455px;
+    border-radius: 71px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
 
 }
 
 .mainheader {
     position: absolute;
-    top: 50%;
-    transform: translate(0,-50%);
+    display:flex;
+    top: 50%; 
+    transform: translate(8%,-50%);
+    font-size: max(calc(1.5vw * 3), 51.2px);
+    min-width: auto;
 
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 77px;
-    line-height: 154.52%;
     color: #000000;
 }
 
