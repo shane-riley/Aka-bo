@@ -141,7 +141,7 @@ class Game(Model):
             for c in range(NCOL-NCONNECT):
                 # (r,c) is starting index
                 token = board_arr[r][c]
-                if token == GameSquare.EMPTY: break
+                if token == GameSquare.EMPTY: continue
                 # Check whether all match
                 won = True
                 for d in range(1, NCONNECT):
@@ -157,7 +157,7 @@ class Game(Model):
             for c in range(NCOL):
                 # (r,c) is starting index
                 token = board_arr[r][c]
-                if token == GameSquare.EMPTY: break
+                if token == GameSquare.EMPTY: continue
                 # Check whether all match
                 won = True
                 for d in range(1, NCONNECT):
@@ -173,7 +173,7 @@ class Game(Model):
             for c in range(NCOL-NCONNECT):
                 # (r,c) is starting index
                 token = board_arr[r][c]
-                if token == GameSquare.EMPTY: break
+                if token == GameSquare.EMPTY: continue
                 # Check whether all match
                 won = True
                 for d in range(1, NCONNECT):
@@ -189,7 +189,7 @@ class Game(Model):
             for c in range(NCOL-NCONNECT):
                 # (r,c) is starting index
                 token = board_arr[r][c]
-                if token == GameSquare.EMPTY: break
+                if token == GameSquare.EMPTY: continue
                 # Check whether all match
                 won = True
                 for d in range(1, NCONNECT):
