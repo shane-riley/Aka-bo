@@ -32,7 +32,7 @@ class GameService(Service):
         """
 
         # Get user
-        user = self.user_store.get_by_username(username)
+        user = self.user_store.get_by_username(username)[0]
         # User exists
         if not user:
             raise Exception
@@ -52,7 +52,7 @@ class GameService(Service):
         """
 
         # Get user
-        user = self.user_store.get_by_username(username)
+        user = self.user_store.get_by_username(username)[0]
         # User exists
         if not user:
             raise Exception

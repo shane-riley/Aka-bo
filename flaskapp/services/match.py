@@ -1,6 +1,6 @@
 from flaskapp.models import Game, MatchTicket
 from flaskapp.shared import *
-from flaskapp.stores import GameStore, MatchStore
+from flaskapp.stores import GameStore, MatchStore, UserStore
 
 from .service import Service
 
@@ -36,8 +36,8 @@ class MatchService(Service):
         # Make the ticket
         ticket = MatchTicket(username=username)
         
-        # Make sure no existing tickets under username
-        if self.match_store.get_by_username(ticket.username):
+        # Make sure no existing tickets under username (excluding filled tickets)
+        if list(filter(lambda tix: tix.gameuuid == "", self.match_store.get_by_username(ticket.username))):
             raise DuplicateException
 
         # Make the ticket

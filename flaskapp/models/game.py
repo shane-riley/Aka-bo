@@ -226,8 +226,8 @@ class Game(Model):
         Updates Player 2
         """
         n = datetime.now(tz=timezone.utc)
-        self.player_one_polled = n
-        self.player_one_expires = n + GAME_TIMEOUT
+        self.player_two_polled = n
+        self.player_two_expires = n + GAME_TIMEOUT
 
     def complete(self) -> bool:
         """
