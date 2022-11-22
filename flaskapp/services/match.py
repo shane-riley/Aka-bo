@@ -1,4 +1,4 @@
-from flaskapp.models import MatchTicket
+from flaskapp.models import Game, MatchTicket
 from flaskapp.shared import *
 from flaskapp.stores import GameStore, MatchStore
 
@@ -72,16 +72,30 @@ class MatchService(Service):
         # What if the ticket gets filled right before we fill it?
         # Treating this as unlikely for now and as a TODO
         other_tickets = self.match_store.get_valid_tickets()
-        ticket_to_match = next(filter(lambda tix: tix.username != ticket.username, other_tickets), None)
+        matched_ticket = next(filter(lambda tix: tix.username != ticket.username, other_tickets), None)
 
-        if not ticket_to_match:
+        if not matched_ticket:
             # Nothing to do; touch
             ticket.touch()
             return self.match_store.update_ticket(ticket)
 
         # else
         # Make a Game instance and point both tickets at it
-        # TODO
+        player_one = ticket.username
+        player_two = ticket.username
+        game = Game(player_one=player_one, player_two=player_two)
+
+        # Store game
+        self.game_store.post_game(game)
+
+        # Mark tickets
+        ticket.gameuuid = game.uuid
+        matched_ticket.gameuuid = game.uuid
+        ticket.touch()
+
+        # Save the marked tickets
+        self.game_store.update_game(matched_ticket)
+        return self.game_store.update_game(ticket)
 
 
 

@@ -19,5 +19,7 @@ NROW = 6
 NCONNECT = 4
 
 # Timeouts
-GAME_TIMEOUT = timedelta(seconds = 120)
-POLLING_TIMEOUT = timedelta(seconds = 30)
+GAME_TIMEOUT = timedelta(hours=1)
+POLLING_TIMEOUT = timedelta(hours=1)
+# GAME_TIMEOUT = timedelta(seconds = 120)
+# POLLING_TIMEOUT = timedelta(seconds = 30)

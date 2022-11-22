@@ -1,6 +1,6 @@
 from flaskapp import Akabo
 
-# Make app (runs setup code implicitly)
+# Make app (runs setup code in constructor)
 app = Akabo(__name__)
 
 if __name__=='__main__':

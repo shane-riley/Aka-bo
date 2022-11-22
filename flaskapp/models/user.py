@@ -13,3 +13,5 @@ class User(Model):
         self.email = email
         self.encrypted_password = encrypted_password
         self.bio = bio
+        self.wins = 0
+        self.losses = 0

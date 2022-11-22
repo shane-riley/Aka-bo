@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from flaskapp.models import Game, GameState
 from flaskapp.shared import *
 from flaskapp.stores import GameStore, UserStore
@@ -16,6 +18,46 @@ class GameService(Service):
         """
         self.game_store = game_store
         self.user_store = user_store
+
+    # Log win
+    def log_win(self, username: str):
+        """
+        Add to win counter
+
+        Args:
+            username (str): username
+
+        Returns:
+            User: updated user object
+        """
+
+        # Get user
+        user = self.user_store.get_by_username(username)
+        # User exists
+        if not user:
+            raise Exception
+        user.wins = user.wins + 1
+        return self.user_store.update_user(user)
+
+    # Log loss
+    def log_loss(self, username: str):
+        """
+        Add to loss counter
+
+        Args:
+            username (str): username
+
+        Returns:
+            User: updated user object
+        """
+
+        # Get user
+        user = self.user_store.get_by_username(username)
+        # User exists
+        if not user:
+            raise Exception
+        user.losses = user.losses + 1
+        return self.user_store.update_user(user)
 
     # Create Game
     def create_game(self, player_one: str, player_two: str) -> Game:
@@ -65,11 +107,43 @@ class GameService(Service):
         # Grab game using uuid
         game = self.game_store.get_by_uuid(uuid)
 
+        # Ensure Game exists
+        if not game:
+            raise InvalidInputException
+
         # Ensure username in game
         if username not in [game.player_one, game.player_two]:
             raise InvalidInputException
 
-        # Update datastore
+        # Ensure user is correct player
+        if username == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
+            raise InvalidInputException
+        if username == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
+            raise InvalidInputException
+
+        # Player is authorized to move
+
+        # Check legality of move
+        if not game.is_legal(move):
+            raise IllegalMoveException
+
+        # Update the game with the move
+        game.apply_move(move)
+
+        if GameState(game.state) == GameState.WIN_ONE:
+            self.log_win(game.player_one)
+            self.log_loss(game.player_two)
+        if GameState(game.state) == GameState.WIN_TWO:
+            self.log_win(game.player_two)
+            self.log_loss(game.player_one)
+
+        # Touch
+        if username == game.player_one:
+            game.touch_1()
+        if username == game.player_two:
+            game.touch_2()
+
+        # Update and return
         return self.game_store.update_game(game)
 
     # Forfeit game
@@ -92,6 +166,10 @@ class GameService(Service):
         # Grab game using uuid
         game = self.game_store.get_by_uuid(uuid)
 
+        # Ensure Game exists
+        if not game:
+            raise InvalidInputException
+
         # Ensure username in game
         if username not in [game.player_one, game.player_two]:
             raise InvalidInputException
@@ -105,11 +183,60 @@ class GameService(Service):
         # ff is valid
         if username == game.player_one:
             game.state = GameState.FF_ONE.value
+            self.log_loss(game.player_one)
+            self.log_win(game.player_two)
             game.touch_1()
         if username == game.player_two:
             game.state = GameState.FF_TWO.value
+            self.log_loss(game.player_two)
+            self.log_win(game.player_win)
             game.touch_2()
         
+        # Update and return
         return self.game_store.update_game(game)
 
     # Poll for update 
+    def poll_game(self, uuid: str, username: str) -> Game:
+        """
+        Poll game for update
+
+        Args:
+            uuid (str): uuid of game
+            username (str): username of player
+
+        Returns:
+            Game: updated game object
+        """
+
+        # Grab game using uuid
+        game = self.game_store.get_by_uuid(uuid)
+
+        # Ensure Game exists
+        if not game:
+            raise InvalidInputException
+
+        # Ensure username in game
+        if username not in [game.player_one, game.player_two]:
+            raise InvalidInputException
+        
+        # Touch and check for timeout
+        if username == game.player_one:
+            game.touch_1()
+            if game.player_two_expires < datetime.now(tz=timezone.utc):
+                game.state = GameState.TIMEOUT_TWO.value
+                self.log_loss(game.player_two)
+                self.log_win(game.player_one)
+        if username == game.player_two:
+            game.touch_2()
+            if game.player_one_expires < datetime.now(tz=timezone.utc):
+                game.state = GameState.TIMEOUT_ONE.value
+                self.log_loss(game.player_one)
+                self.log_win(game.player_two)
+        
+        # Store and return
+        return self.game_store.update_game(game)
+
+
+
+
+
