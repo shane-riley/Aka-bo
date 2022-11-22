@@ -1,4 +1,10 @@
-class GameService:
+from flaskapp.models import Game, GameState
+from flaskapp.shared import *
+from flaskapp.stores import GameStore, UserStore
+
+from .service import Service
+
+class GameService(Service):
     
     def __init__(self, game_store: GameStore, user_store: UserStore):
         """
@@ -12,12 +18,11 @@ class GameService:
         self.user_store = user_store
 
     # Create Game
-    def create_game(self, game_type: str, player_one: str, player_two: str) -> Game:
+    def create_game(self, player_one: str, player_two: str) -> Game:
         """
         Make a new game
 
         Args:
-            game_type (str): Type to play
             player_one (str): Player one username
             player_two (str): Player two username
         
@@ -28,10 +33,6 @@ class GameService:
             InvalidInputException: If input issue
         """
 
-        # Ensure game_type is valid
-        if game_type not in SUPPORTED_GAMES:
-            raise InvalidInputException
-
         # Ensure usernames are valid
         if not self.user_store.get_by_username(player_one):
             raise InvalidInputException
@@ -40,7 +41,6 @@ class GameService:
 
         # Make a new game
         game = Game(
-            game_type=game_type,
             player_one=player_one,
             player_two=player_two
         )
@@ -68,33 +68,6 @@ class GameService:
         # Ensure username in game
         if username not in [game.player_one, game.player_two]:
             raise InvalidInputException
-
-        # Ensure user is the one to move
-        if ((username == game.player_one and 
-            GameState(game.state) != GameState.MOVE_ONE)
-            or (username == game.player_two and 
-            GameState(game.state) != GameState.MOVE_TWO)):
-            raise InvalidInputException
-
-        # Ensure move is legal
-        if not Connect4.is_legal(game.board, move):
-            raise InvalidInputException
-
-        # Apply move
-        new_board = Connect4.apply_move(game.board, move)
-
-        # Check for a win
-        new_state = Connect4.check_end(new_board).value
-
-        # Touch
-        if GameState(game.state) == GameState.MOVE_ONE:
-            game.touch_1()
-        else:
-            game.touch_2()
-
-        # Update values
-        game.board = new_board
-        game.state = new_state
 
         # Update datastore
         return self.game_store.update_game(game)

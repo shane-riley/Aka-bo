@@ -1,4 +1,10 @@
-class UserService:
+from flaskapp.models import User
+from flaskapp.shared import *
+from flaskapp.stores import UserStore
+
+from .service import Service
+
+class UserService(Service):
     """
     Service class for users.
 

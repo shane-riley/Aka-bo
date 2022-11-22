@@ -10,6 +10,9 @@ class IllegalMoveException(Exception):
 class InvalidInputException(Exception):
     pass
 
+# API ROOT
+API_ROOT = "/api/v1"
+
 # NCOL, NROW
 NCOL = 7
 NROW = 6

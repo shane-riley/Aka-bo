@@ -1,12 +1,19 @@
-class MatchTicketService:
+from flaskapp.models import MatchTicket
+from flaskapp.shared import *
+from flaskapp.stores import GameStore, MatchStore
+
+from .service import Service
+
+class MatchService(Service):
     
-    def __init__(self, match_store: MatchStore):
+    def __init__(self, game_store: GameStore, match_store: MatchStore):
         """
         Create a MatchService
 
         Args:
             match_store (MatchStore): Storage implementation to use
         """
+        self.game_store = game_store
         self.match_store = match_store
 
     # Create a ticket

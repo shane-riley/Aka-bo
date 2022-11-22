@@ -1,10 +1,7 @@
-# Grab app from main
-from main import app
+# Export master api creation
+from .api import setup_api
 
-# DEFINE API root
-API_ROOT = "/api/v1"
-
-# Import api routes
-# from . import game
-# from . import matchmaking
-from . import user
+# Export minor api creation
+from .game import setup_game_api
+from .match import setup_match_api
+from .user import setup_user_api

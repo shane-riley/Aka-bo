@@ -5,9 +5,9 @@ from flaskapp import Akabo
 from flaskapp.models import User
 from flaskapp.shared import *
 
-def setup_game_api(app: Akabo):
+def setup_match_api(app: Akabo):
     """
-    Add game routes
+    Add matchmaking routes
 
     Args:
         app (Akabo): app to add to

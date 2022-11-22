@@ -1,8 +1,5 @@
-# Grab app from main
-from main import app
-
 # Import page routes
-from . import pages
+from .pages import setup_pages
 
 # Import api routes
-from . import api
+from .api import setup_api
