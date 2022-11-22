@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 from flaskapp.shared import *
 from .model import Model
 
-class MatchTicket:
+class MatchTicket(Model):
     """
     Model class for matchmaking tickets
     """
@@ -13,9 +13,8 @@ class MatchTicket:
 
     def __init__(self, 
                  username="",
-                 game="", 
-                 created=datetime.now().timestamp(),
-                 polled=datetime.now().timestamp()):
+                 created=datetime.now(tz=timezone.utc),
+                 polled=datetime.now(tz=timezone.utc)):
         """
         Make a ticket model
 
@@ -26,11 +25,10 @@ class MatchTicket:
         """
 
         self.username = username
-        self.game = game
         self.created = created
         self.polled = polled
         self.expires = created + POLLING_TIMEOUT
-        self.uuid = uuid.uuid4()
+        self.uuid = str(uuid.uuid4())
         self.gameuuid = ""
     
     def is_filled(self) -> bool:
@@ -46,6 +44,6 @@ class MatchTicket:
         """
         Updates polled and expires times
         """
-        ts = datetime.now().timestamp()
+        ts = datetime.now(tz=timezone.utc)
         self.polled = ts
         self.expires = ts + POLLING_TIMEOUT

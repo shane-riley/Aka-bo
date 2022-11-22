@@ -1,11 +1,9 @@
 from flask import jsonify, make_response, request
 import typing
 
-
 from flaskapp import Akabo
 from flaskapp.models import User
 from flaskapp.shared import *
-
 
 def setup_user_api(app: Akabo):
     """

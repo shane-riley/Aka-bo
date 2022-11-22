@@ -17,13 +17,12 @@ class MatchService(Service):
         self.match_store = match_store
 
     # Create a ticket
-    def create_ticket(self, ticket: MatchTicket) -> MatchTicket:
+    def create_ticket(self, username: str) -> MatchTicket:
         """
         Create a matchmaking ticket
 
         Args:
             username (str): User looking for game
-            game (str): Game to play
         
         Returns:
             MatchTicket: Matchmaking ticket
@@ -33,10 +32,9 @@ class MatchService(Service):
             InvalidInputException: If other input issue
             Exception: Other errors
         """
-    
-        # Make sure nonzero username
-        if not ticket.username:
-            raise InvalidInputException
+
+        # Make the ticket
+        ticket = MatchTicket(username=username)
         
         # Make sure no existing tickets under username
         if self.match_store.get_by_username(ticket.username):
@@ -60,6 +58,10 @@ class MatchService(Service):
         # Grab the ticket
         ticket = self.match_store.get_by_uuid(uuid)
 
+        # Ticket exists
+        if not ticket:
+            raise InvalidInputException
+
         # If ticket is filled nothing to do
         if ticket.is_filled():
             # Nothing to do; touch
@@ -82,7 +84,7 @@ class MatchService(Service):
         # else
         # Make a Game instance and point both tickets at it
         player_one = ticket.username
-        player_two = ticket.username
+        player_two = matched_ticket.username
         game = Game(player_one=player_one, player_two=player_two)
 
         # Store game
@@ -94,8 +96,8 @@ class MatchService(Service):
         ticket.touch()
 
         # Save the marked tickets
-        self.game_store.update_game(matched_ticket)
-        return self.game_store.update_game(ticket)
+        self.match_store.update_ticket(matched_ticket)
+        return self.match_store.update_ticket(ticket)
 
 
 
@@ -116,6 +118,10 @@ class MatchService(Service):
         # Grab the ticket
         ticket = self.match_store.get_by_uuid(uuid)
 
+        # Ticket exists
+        if not ticket:
+            raise InvalidInputException
+
         # No-op if ticket is filled
         if ticket.is_filled():
             return ticket
@@ -125,4 +131,4 @@ class MatchService(Service):
         # NOTE: There is 100% a race condition here:
         # Match could be filled after checking and before deleting
         # Treating this as unlikely for now and as a TODO
-        self.match_store.delete_by_uuid(uuid)
+        return self.match_store.delete_by_uuid(uuid)

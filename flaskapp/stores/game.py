@@ -3,7 +3,7 @@ from typing import List, Optional
 from flaskapp.models import Game
 from .store import Store
 
-class GameStore:
+class GameStore(Store):
     """
     Class for storing Games
     """

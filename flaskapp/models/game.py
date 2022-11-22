@@ -57,7 +57,7 @@ class Game(Model):
             board (Board, optional): Board layout as string. Defaults to "".
             state (GameState, optional): State of game. Defaults to GameState.MOVE_ONE.value.
         """
-        self.uuid = uuid.uuid4()
+        self.uuid = str(uuid.uuid4())
         self.created = created
         self.player_one = player_one
         self.player_two = player_two
