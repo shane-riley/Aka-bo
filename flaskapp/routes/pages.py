@@ -27,6 +27,14 @@ def newuser_page():
     User creation page route.
     """
     return flask.redirect("/s/newuser.html", code=302)
+    
+# Profile Page
+@app.route('/profilepage')
+def profilepage_page():
+    """
+    Profile Page Route
+    """
+    return flask.redirect("/s/profilepage.html", code=302)
 
 # Usermod page (drop to login if not authorized)
 @app.route('/user/<string:username>')
