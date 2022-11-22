@@ -2,34 +2,6 @@ from google.cloud import datastore
 from typing import List
 from datetime import datetime
 
-
-class InvalidInputException(Exception):
-    pass
-
-
-class DuplicateException(Exception):
-    pass
-
-SUPPORTED_GAMES = ['Connect4']
-
-class Model:
-    """
-    BaseClass for Model objects
-    """
-
-    def serialize(self):
-        """
-        Make json representation
-
-        NOTE: Because of dynamic reasons, this method can see subclass attributes
-
-        Returns:
-            dictionary json response
-        """
-
-        # Use default
-        return self.__dict__
-
 class Store:
     """Baseclass for Storing objects 
     """
