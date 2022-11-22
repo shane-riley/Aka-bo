@@ -48,8 +48,8 @@ def setup_user_api(app: Akabo):
         # bio
 
         user = User(
-            username=request.args.get("username"),
-            bio=request.args.get("bio")
+            username=request.json.get("username"),
+            bio=request.json.get("bio")
         ) 
 
         try:
