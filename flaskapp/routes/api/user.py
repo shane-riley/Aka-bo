@@ -41,6 +41,7 @@ def setup_user_api(app: Akabo):
 
     # PUT /user : Modify a user
     @app.route(API_ROOT+"/user", methods=['PUT'])
+    @check_token
     def update_user():
         # inputs: username and modifiable fields
         # bio
@@ -62,6 +63,7 @@ def setup_user_api(app: Akabo):
 
     # DELETE /user : Delete a user
     @app.route(API_ROOT+"/user", methods=['DELETE'])
+    @check_token
     def delete_user():
         # One input: username
 
