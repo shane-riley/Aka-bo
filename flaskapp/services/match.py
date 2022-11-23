@@ -16,6 +16,10 @@ class MatchService(Service):
         self.game_store = game_store
         self.match_store = match_store
 
+        # Add a constructor argument and an instance variable for user store
+        # TODO:
+        # @benza
+
     # Create a ticket
     def create_ticket(self, username: str) -> MatchTicket:
         """
@@ -32,6 +36,11 @@ class MatchService(Service):
             InvalidInputException: If other input issue
             Exception: Other errors
         """
+
+        #TODO: Check that username exists in user store
+        # @benza
+        # If does, continue
+        # If doesn't, raise a InvalidInputException
 
         # Make the ticket
         ticket = MatchTicket(username=username)

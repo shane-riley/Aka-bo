@@ -31,6 +31,9 @@ class Akabo(flask.Flask):
         gs = GameStore()
         ms = MatchStore()
 
+        # This will need modified
+        # Add UserStore reference to MatchService constructor
+        # @benza
         self.user_service = UserService(us)
         self.match_service = MatchService(gs, ms)
         self.game_service = GameService(gs, us)

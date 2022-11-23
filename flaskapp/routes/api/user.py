@@ -63,7 +63,7 @@ def setup_user_api(app: Akabo):
 
     # DELETE /user : Delete a user
     @app.route(API_ROOT+"/user", methods=['DELETE'])
-    @check_token
+    # @check_token
     def delete_user():
         # One input: username
 

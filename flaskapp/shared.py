@@ -21,7 +21,7 @@ def check_token(f):
             return make_response("Unauthorized.", 401)
         try:
             user = auth.verify_id_token(request.headers['authorization'])
-            request.user = user
+            request.uid = user.get('uid')
         except:
             return make_response("Unauthorized.", 401)
         return f(*args, **kwargs)

@@ -18,6 +18,10 @@ def setup_match_api(app: Akabo):
     def create_ticket():
         # One input: username
 
+        # @benza
+        # SHOULD FAIL IF USERNAME NOT IN DATABASE
+        # THAT LOGIC SHOULD GO IN THE MATCHSERVICE
+
         username = request.json.get("username")
         try:
             mt = app.match_service.create_ticket(username)
