@@ -53,7 +53,7 @@ body {
     width: 65vw;
     height: 20vw;
     margin: auto;
-    top: 250px;
+    top: 200px;
     min-width: 650px;
     min-height: 350px;;
     background: #F4CD00;
@@ -124,22 +124,23 @@ body {
     -ms-transform: translate(-50%, -50%);
 }
 
-.loginbutton {
+/* .loginbutton {
     position: absolute;
     width: 376px;
     height: 65px;
-    left: 532px;
-    top: 292px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     border-radius: 50px;
-}
+} */
 
-.rectangle3 {
-    position: absolute;
-    width: 376px;
-    height: 65px;
-    left: 0px;
-    top: 0px;
+.buttonrow {
+    position: relative;
+    margin: auto;
+    width: 20vw;
+    height: 6vw;
+    top: 100px;
+    min-width: 200px;
+    min-height: 65px;
+
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     background: var(--yell);
     border-radius: 50px;
@@ -147,15 +148,14 @@ body {
 
 .loginword {
     position: absolute;
-    width: 305px;
-    height: 65px;
-    left: 35px;
-    top: 0px;
+    display: flex;
+    top: 50%;
+
+    font-size: max(calc(1.3vw * 3.5),45px);
+    transform: translate(36%, -50%);
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 48px;
-    line-height: 154.52%;
     text-align: center;
     color: #000000;
 }
