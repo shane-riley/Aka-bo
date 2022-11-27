@@ -1,6 +1,7 @@
 var playerRed = "R";
 var playerYellow = "Y";
 var currPlayer = playerRed;
+var gameState = "01010111111123456666";
 
 var gameOver = false;
 var board;
@@ -9,7 +10,8 @@ var rows = 6;
 var columns = 7;
 var currColumns = []; //keeps track of which row each column is at.
 
-window.onload = function() {
+window.onload = function() 
+{
     setGame();
 }
 
@@ -31,6 +33,7 @@ function setGame() {
         }
         board.push(row);
     }
+    drawGame();
 }
 
 function setPiece() {
@@ -65,6 +68,44 @@ function setPiece() {
     currColumns[c] = r; //update the array
 
     checkWinner();
+}
+
+function drawGame() {
+    if (gameOver) {
+        return;
+    }
+
+    var columnHeights = [0, 0, 0, 0, 0, 0, 0]
+
+    for(let i = 0; i < gameState.length; i++)
+    {
+        if (gameOver) {
+            return;
+        }
+        
+        let currColumn = parseInt(gameState[i]); 
+        let currRow = currColumns[currColumn];
+
+        if(currRow < 0){
+            continue;
+        }
+
+        board[currRow][currColumn] = currPlayer; 
+
+        let tile = document.getElementById(currRow.toString() + "-" + currColumn.toString());
+        if (currPlayer == playerRed) {
+            tile.classList.add("red-piece");
+            currPlayer = playerYellow;
+        }
+        else {
+            tile.classList.add("yellow-piece");
+            currPlayer = playerRed;
+        }
+
+        currRow -= 1; //update the row height for that column
+        currColumns[currColumn] = currRow; //update the array
+        checkWinner();
+    }
 }
 
 function checkWinner() {
@@ -119,6 +160,7 @@ function checkWinner() {
 
 function setWinner(r, c) {
     let winner = document.getElementById("winner");
+    // console.log("Game end");
     if (board[r][c] == playerRed) {
         winner.innerText = "Red Wins";             
     } else {
