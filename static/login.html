@@ -1,0 +1,112 @@
+<html>
+   
+    <title> Connect 4</title>
+        <head>
+
+            <link rel="stylesheet" href="css/styles.css">
+            <link rel="shortcut icon" href="favicon.ico">
+
+        </head>
+        
+        <a class="returnToMain"
+            href="index.html">
+            Return
+        </a>
+
+
+        <div class="akaBox">
+        
+            Akabo
+        </div>
+
+
+       
+        <form action="action_page.php" method="post">
+            <object class="loginBox">
+                    <text>
+                        Login:
+                    
+                        
+                    
+            
+                <div>
+                </div>
+                <!-- <label for="uname"><b>Username</b></label> -->
+                <input type="text" placeholder="Enter Username" name="uname" id="uName" required class="inputUser">
+                </div>
+
+                <div>
+
+                    <input type="password" placeholder="Enter Password" name="psw" id="passW" required
+                    class="inputPassword";>
+                </div>
+                
+                <div>
+                    <input type="button" value="Submit" class="submitButton1"
+                    onclick="submitLogin(uName,passW)">
+                </div>
+
+            </object>
+
+
+            <object class="newMemberBox">
+
+                <text>
+                    Create New User:
+                
+                </div>
+                
+                    <input type="text" placeholder="Enter Email" name="Emails" id="Email" required class="inputUser">
+  
+                </div>
+                
+        
+                    <div>
+
+                </div>
+             
+                    <input type="text" placeholder="Enter Username" name="nmUname" id="nmUser" required class="inputPassword">
+
+                </div>
+                <div>
+                    <input type="password" placeholder="Enter Password" name="nmPsw" id="nmPassword" required
+                    class="inputPassword";>
+                </div>
+
+                <div>
+                </div>
+
+                <div>
+                    <input type="button" value="Submit" class="submitButton"
+                    onclick="submitNewUser(Email,nmUser, nmPassword)">
+
+                </div>
+
+              
+            </object>
+
+            
+            
+
+            
+        <script>
+                function submitLogin(){
+                    user=document.getElementById('uName').value
+                    password=document.getElementById('passW').value
+                    alert("Username is "+user+ " Password is "+password)
+        
+        
+                }
+                function submitNewUser(){
+                    email=document.getElementById('Email').value
+                    user=document.getElementById('nmUser').value
+                    password=document.getElementById('nmPassword').value
+                    alert("Email is "+email+ " Username is " +user+ " Password is "+password)
+        
+        
+                }
+        </script>
+
+    
+
+</html>

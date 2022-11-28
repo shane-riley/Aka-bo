@@ -1,9 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Aka-bo!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-  </body>
+
+<head>
+  <title>Main Page</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="shortcut icon" href="favicon.ico">
+</head>
+
+<body>
+<div class="rectangle1">
+  <span class="mainheader">Welcome to Aka-bo Games!</span>
+</div>
+
+<div class="buttonrow" onclick="window.location.href = '/login';">
+    <span class="loginword">Login</span>
+</div>
+
+<div class="rectangle2">
+  <span class="choosegame">Choose a game!</span>
+  <button class="gamebutton" onclick="window.location.href = '/game';" >
+    <img class="con4pic" src="img/3367465.png" alt="Connect Four" />
+    <div class="overlay">
+      <div class="overlaytext">Connect Four!</div>
+    </div>
+  </button>
+</div>
+
+  <a class="rectangle" href="/newuser">
+    <div class="yellow-text">Create User (internal)</div>
+  </a>
+
+  <a class= "rectangle" href = "/profilepage">
+    <div class="yellow-text">Profile Page</div>
+  </a>
+
+</div>
+</body>
+
 </html>
