@@ -49,7 +49,9 @@ def check_token(f):
             except:
                 return make_response("Unauthorized.", 401)
         else:
-            request.uid = request.args.get('username')
+            request.uid = request.args.get('uid')
+            if not request.uid:
+                request.uid = request.args.get('username')
         return f(*args, **kwargs)
     return wrap
 

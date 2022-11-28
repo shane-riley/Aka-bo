@@ -73,7 +73,6 @@ def setup_user_api(app: Akabo):
         # bio
 
         user = User(
-            username=request.args.get("username"),
             bio=request.args.get("bio"),
             uid=request.uid
         ) 
