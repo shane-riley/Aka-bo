@@ -1,8 +1,23 @@
-// All API methods
+// Imports
+import {initializeApp} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, getIdToken } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"
 
+// Constants
 const API_ROOT = '/api/v1';
+const FIREBASE_KEY = "AIzaSyDjs3IrkfvnzrmkATrFvOUO1JEQESW5-8U";
+const FIREBASE_DOMAIN = "graycs1520.firebaseapp.com";
+const DO_AUTHORIZATION = true;
 
-const DO_AUTHORIZATION = false;
+// Init firebase whenever this file is pulled
+const FB_CONFIG = {
+    apiKey: FIREBASE_KEY,
+    authDomain: FIREBASE_DOMAIN
+};
+
+const FB_APP = initializeApp(FB_CONFIG);
+console.log(FB_APP);
+const FB_AUTH = getAuth(FB_APP);
+console.log(FB_AUTH)
 
 async function akaAPIRequest(method, absLink, headers) {
     // GENERAL API Request method
@@ -51,18 +66,26 @@ function urlWithArgs(url, args) {
 }
 
 // Get token
-async function getToken() {
+export async function fbGetToken() {
 
-
-    if (DO_AUTHORIZATION) {
-        // TODO: Implement me
-
-        return null;
+    if (DO_AUTHORIZATION && fbIsLoggedIn()) {
+        return await getIdToken(fbUser(), false);
     }
     else {
         // No auth
         return null;
     }
+}
+
+export function fbIsLoggedIn() {
+    if (!DO_AUTHORIZATION) return true;
+
+    return fbUser() !== null;
+}
+
+export function fbUser() {
+    if (!DO_AUTHORIZATION) return null;
+    return getAuth(FB_APP).currentUser
 }
 
 // Make headers
@@ -73,24 +96,27 @@ function buildHeaders(auth = null) {
 }
 
 // Firebase ops *********************************************************************
-async function fbLogin(username, password) {
+export async function fbLogin(email, password) {
     
     if (DO_AUTHORIZATION) {
-        // TODO: Use firebase wrapper to login
+        // Use firebase wrapper to login
+        return await signInWithEmailAndPassword(getAuth(FB_APP), email, password);
     }
 }
 
-async function fbLogout() {
+export async function fbLogout() {
     
     if (DO_AUTHORIZATION) {
-        // TODO: Use firebase wrapper to logout
+        // Use firebase wrapper to logout
+        return await signOut(getAuth(FB_APP));
     }
 }
 
-async function fbCreateUser(username, password) {
+export async function fbCreateUser(email, password) {
     
     if (DO_AUTHORIZATION) {
-        // TODO: Use firebase wrapper to create user
+        // Use firebase wrapper to create user
+        return await createUserWithEmailAndPassword(getAuth(FB_APP), email, password);
     }
 }
 
@@ -127,7 +153,7 @@ export async function akaCreateUser(username, email, password) {
 
     // TODO: Create user with username and password (assume token stored at this point)
     // Only if auth on
-    await fbCreateUser(username, password);
+    await fbCreateUser(email, password);
 
     const args = {
         username: username,
@@ -136,7 +162,7 @@ export async function akaCreateUser(username, email, password) {
 
     return await akaAPIRequest("POST",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -159,7 +185,7 @@ export async function akaGetUser(uid) {
 
     return await akaAPIRequest("GET",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -186,7 +212,7 @@ export async function akaUpdateUser(uid, bio) {
 
     return await akaAPIRequest("PUT",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -211,7 +237,7 @@ export async function akaDeleteUser(uid) {
 
     return await akaAPIRequest("DELETE",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -238,7 +264,7 @@ export async function akaCreateTicket(uid) {
 
     return await akaAPIRequest("POST",
                                API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -265,7 +291,7 @@ export async function akaPollTicket(ticket_uuid, uid) {
 
     return await akaAPIRequest("GET",
                                API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -292,7 +318,7 @@ export async function akaDeleteTicket(ticket_uuid, uid) {
 
     return await akaAPIRequest("DELETE",
                                API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -321,7 +347,7 @@ export async function akaPollGame(game_uuid, uid) {
 
     return await akaAPIRequest("GET",
                                API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -350,7 +376,7 @@ export async function akaMakeMove(game_uuid, uid, move) {
 
     return await akaAPIRequest("PUT",
                                API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }
 
 
@@ -377,5 +403,5 @@ export async function akaForfeitGame(game_uuid, uid) {
 
     return await akaAPIRequest("DELETE",
                                API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await getToken()));
+                               buildHeaders(await fbGetToken()));
 }

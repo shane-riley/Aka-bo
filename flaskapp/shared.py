@@ -1,10 +1,13 @@
 from datetime import timedelta
 from functools import wraps
 from flask import jsonify, request, make_response, redirect
-from firebase_admin import auth
+from firebase_admin import auth, initialize_app, credentials
 
 # API ROOT
 API_ROOT = "/api/v1"
+FIREBASE_KEY = "AIzaSyDjs3IrkfvnzrmkATrFvOUO1JEQESW5-8U"
+FIREBASE_DOMAIN = "graycs1520.firebaseapp.com"
+# cred = credentials.Certificate('.firebase-sdk.json')
 
 # NCOL, NROW
 NCOL = 7
@@ -12,7 +15,9 @@ NROW = 6
 NCONNECT = 4
 
 # AUTH
-DO_AUTHORIZATION = False
+DO_AUTHORIZATION = True
+if DO_AUTHORIZATION:
+    initialize_app()
 
 # Display test page
 TESTING_MODE = True
