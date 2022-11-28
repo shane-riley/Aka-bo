@@ -1,24 +1,10 @@
 import flask
-import typing
-
+from .__init__ import app
+from firebase_admin import auth 
 from flaskapp import Akabo
 
 # Add pages api routes
 def setup_pages(app: Akabo):
-    """
-    Add page routes to app
-
-    Args:
-        app (Akabo): flaskapp
-    """
-
-    # API Test page
-    @app.route('/test')
-    def test_page():
-        """
-        Test page route.
-        """
-        return flask.redirect("/s/test.html", code=302)
 
     # Main page
     @app.route('/')
@@ -43,6 +29,14 @@ def setup_pages(app: Akabo):
         User creation page route.
         """
         return flask.redirect("/s/newuser.html", code=302)
+        
+    # Profile Page
+    @app.route('/profilepage')
+    def profilepage_page():
+        """
+        Profile Page Route
+        """
+        return flask.redirect("/s/profilepage.html", code=302)
 
     # Usermod page (drop to login if not authorized)
     @app.route('/user/<string:username>')
