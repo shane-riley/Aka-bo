@@ -35,28 +35,54 @@ class UserStore(Store):
         Returns:
             User: User updated
         """
-        return super().update_object(User, user, 'username', user.username)
+        return super().update_object(User, user, 'uid', user.uid)
 
-    def get_by_username(self, username: str) -> List[User]:
+    def get_by_uid(self, uid: str) -> User:
         """
-        Get a list of users matching the username
+        Get a list of users matching the uid
 
         Args:
-            username (str): Username to match
+            uid (str): uid to match
 
         Returns:
-            List[User]: Length=1 list of users
+            User:
         """
-        return super().get_objects_by_field(User, 'username', username)
+        u = super().get_objects_by_field(User, 'uid', uid)
+        return u[0] if len(u) else None
 
-    def delete_by_username(self, username: str) -> None:
+    def uid_exists(self, uid: str) -> bool:
         """
-        Delete a list of users matching the username
+        Check whether uid exists in table
 
         Args:
-            username (str): Username to match
+            uid (str): user id
 
         Returns:
-            List[User]: Length=1 list of users
+            bool: whether exists in table
         """
-        return super().delete_by_field(User, 'username', username)[0]
+        return len(super().get_objects_by_field(User, 'uid', uid)) > 0
+
+    def username_exists(self, username: str) -> bool:
+        """
+        Check whether username exists in table
+
+        Args:
+            username (str): public username
+
+        Returns:
+            bool: whether exists in table
+        """
+        return len(super().get_objects_by_field(User, 'username', username)) > 0
+
+    def delete_by_uid(self, uid: str) -> None:
+        """
+        Delete a list of users matching the uid
+
+        Args:
+            uid (str): uid to match
+
+        Returns:
+            User: Deleted user
+        """
+        u = super().delete_by_field(User, 'uid', uid)
+        return u[0] if len(u) else None

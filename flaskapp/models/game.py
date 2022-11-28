@@ -21,15 +21,15 @@ class GameState(Enum):
 
     Stored as integers in datastore
     """
-    MOVE_ONE = 1 # Moves
-    MOVE_TWO = 2
-    WIN_ONE = 3 # Wins
-    WIN_TWO = 4
-    DRAW = 5 # draw
-    TIMEOUT_ONE = 6 # timeouts
-    TIMEOUT_TWO = 7
-    FF_ONE = 8 # forfeits
-    FF_TWO = 9
+    MOVE_ONE = "MOVE_ONE" # Moves
+    MOVE_TWO = "MOVE_TWO"
+    WIN_ONE = "WIN_ONE" # Wins
+    WIN_TWO = "WIN_TWO"
+    DRAW = "DRAW" # draw
+    TIMEOUT_ONE = "TIMEOUT_ONE" # timeouts
+    TIMEOUT_TWO = "TIMEOUT_TWO"
+    FF_ONE = "FF_ONE" # forfeits
+    FF_TWO = "FF_TWO"
 
 class Game(Model):
     """
@@ -51,9 +51,9 @@ class Game(Model):
         # NOTE: This is fixed as C4 for now
 
         Args:
-            created (float, optional): Time of creation. Defaults to datetime.now().timestamp().
-            player_one (str, optional): Player one username. Defaults to "".
-            player_two (str, optional): Player two username. Defaults to "".
+            created (float, optional): Time of creation. Defaults to datetime.now() at utc
+            player_one (str, optional): Player one uid. Defaults to "".
+            player_two (str, optional): Player two uid. Defaults to "".
             board (Board, optional): Board layout as string. Defaults to "".
             state (GameState, optional): State of game. Defaults to GameState.MOVE_ONE.value.
         """

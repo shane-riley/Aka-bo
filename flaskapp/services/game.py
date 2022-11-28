@@ -20,19 +20,19 @@ class GameService(Service):
         self.user_store = user_store
 
     # Log win
-    def log_win(self, username: str):
+    def log_win(self, uid: str):
         """
         Add to win counter
 
         Args:
-            username (str): username
+            uid (str): unique user identifier
 
         Returns:
             User: updated user object
         """
 
         # Get user
-        user = self.user_store.get_by_username(username)[0]
+        user = self.user_store.get_by_uid(uid)
         # User exists
         if not user:
             raise Exception
@@ -40,19 +40,19 @@ class GameService(Service):
         return self.user_store.update_user(user)
 
     # Log loss
-    def log_loss(self, username: str):
+    def log_loss(self, uid: str):
         """
         Add to loss counter
 
         Args:
-            username (str): username
+            uid (str): unique user identifier
 
         Returns:
             User: updated user object
         """
 
         # Get user
-        user = self.user_store.get_by_username(username)[0]
+        user = self.user_store.get_by_uid(uid)
         # User exists
         if not user:
             raise Exception
@@ -65,8 +65,8 @@ class GameService(Service):
         Make a new game
 
         Args:
-            player_one (str): Player one username
-            player_two (str): Player two username
+            player_one (str): Player one uid
+            player_two (str): Player two uid
         
         Returns:
             game (Game): Game created
@@ -75,10 +75,10 @@ class GameService(Service):
             InvalidInputException: If input issue
         """
 
-        # Ensure usernames are valid
-        if not self.user_store.get_by_username(player_one):
+        # Ensure uids are valid
+        if not self.user_store.uid_exists(player_one):
             raise InvalidInputException
-        if not self.user_store.get_by_username(player_two):
+        if not self.user_store.uid_exists(player_two):
             raise InvalidInputException
 
         # Make a new game
@@ -91,13 +91,13 @@ class GameService(Service):
         return self.game_store.post_game(game)
 
     # Make move
-    def make_move(self, uuid: str, username: str, move: str) -> Game:
+    def make_move(self, uuid: str, uid: str, move: str) -> Game:
         """
         Make a move
 
         Args:
             uuid (str): Game uuid
-            username (str): User making move
+            uid (str): User making move
             move (str): Move to make (column)
 
         Returns:
@@ -107,18 +107,21 @@ class GameService(Service):
         # Grab game using uuid
         game = self.game_store.get_by_uuid(uuid)
 
+        # Cast
+        move = int(move)
+
         # Ensure Game exists
         if not game:
             raise InvalidInputException
 
-        # Ensure username in game
-        if username not in [game.player_one, game.player_two]:
+        # Ensure uid in game
+        if uid not in [game.player_one, game.player_two]:
             raise InvalidInputException
 
         # Ensure user is correct player
-        if username == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
+        if uid == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
             raise InvalidInputException
-        if username == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
+        if uid == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
             raise InvalidInputException
 
         # Player is authorized to move
@@ -138,28 +141,28 @@ class GameService(Service):
             self.log_loss(game.player_one)
 
         # Touch
-        if username == game.player_one:
+        if uid == game.player_one:
             game.touch_1()
-        if username == game.player_two:
+        if uid == game.player_two:
             game.touch_2()
 
         # Update and return
         return self.game_store.update_game(game)
 
     # Forfeit game
-    def forfeit_game(self, uuid: str, username: str) -> Game:
+    def forfeit_game(self, uuid: str, uid: str) -> Game:
         """
         Forfeit game
 
         Args:
             uuid (str): Game uuid
-            username (str): username attempting forfeit
+            uid (str): uid attempting forfeit
 
         Returns:
             Game: Game forfeited
 
         Raises:
-            InvalidInputException: If username cannot ff at this time,
+            InvalidInputException: If uid cannot ff at this time,
             or if user not in game
         """
 
@@ -170,23 +173,23 @@ class GameService(Service):
         if not game:
             raise InvalidInputException
 
-        # Ensure username in game
-        if username not in [game.player_one, game.player_two]:
+        # Ensure uid in game
+        if uid not in [game.player_one, game.player_two]:
             raise InvalidInputException
 
         # Can only ff if it is the player's move
-        if username == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
+        if uid == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
             raise InvalidInputException
-        if username == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
+        if uid == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
             raise InvalidInputException
 
         # ff is valid
-        if username == game.player_one:
+        if uid == game.player_one:
             game.state = GameState.FF_ONE.value
             self.log_loss(game.player_one)
             self.log_win(game.player_two)
             game.touch_1()
-        if username == game.player_two:
+        if uid == game.player_two:
             game.state = GameState.FF_TWO.value
             self.log_loss(game.player_two)
             self.log_win(game.player_win)
@@ -196,13 +199,13 @@ class GameService(Service):
         return self.game_store.update_game(game)
 
     # Poll for update 
-    def poll_game(self, uuid: str, username: str) -> Game:
+    def poll_game(self, uuid: str, uid: str) -> Game:
         """
         Poll game for update
 
         Args:
             uuid (str): uuid of game
-            username (str): username of player
+            uid (str): uid of player
 
         Returns:
             Game: updated game object
@@ -215,18 +218,18 @@ class GameService(Service):
         if not game:
             raise InvalidInputException
 
-        # Ensure username in game
-        if username not in [game.player_one, game.player_two]:
+        # Ensure uid in game
+        if uid not in [game.player_one, game.player_two]:
             raise InvalidInputException
         
         # Touch and check for timeout
-        if username == game.player_one:
+        if uid == game.player_one:
             game.touch_1()
             if game.player_two_expires < datetime.now(tz=timezone.utc):
                 game.state = GameState.TIMEOUT_TWO.value
                 self.log_loss(game.player_two)
                 self.log_win(game.player_one)
-        if username == game.player_two:
+        if uid == game.player_two:
             game.touch_2()
             if game.player_one_expires < datetime.now(tz=timezone.utc):
                 game.state = GameState.TIMEOUT_ONE.value

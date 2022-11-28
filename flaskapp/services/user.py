@@ -21,6 +21,29 @@ class UserService(Service):
         """
         self.user_store = user_store
 
+    def get_user(self, uid: str) -> User:
+        """
+        Load user from uid
+
+        Args:
+            uid (str): unique identifier
+
+        Returns:
+            User: coressponding user object
+        """
+
+        # Confirm uid
+        if not uid:
+            raise InvalidInputException
+
+        u = self.user_store.get_by_uid(uid)
+
+        # Throw if no match
+        if not u:
+            raise NoMatchException
+
+        return self.user_store.get_by_uid(uid)
+
     def create_user(self, user: User) -> User:
         """
         Create user.
@@ -38,12 +61,12 @@ class UserService(Service):
         """
 
         # Make sure user's inputs exist
-        # username, epw, email
-        if not (user.username and user.email and user.encrypted_password):
+        # username, uid, email
+        if not (user.username and user.email and user.uid):
             raise InvalidInputException
 
         # Check against db
-        if self.user_store.get_by_username(user.username):
+        if self.user_store.get_by_uid(user.uid):
             raise DuplicateException
 
         # Add user
@@ -64,13 +87,12 @@ class UserService(Service):
             or if user exists
         """
 
-        # Make sure user's inputs exist
-        # username, epw, email
-        if not (user.username):
+        # Make sure user's uid exist
+        if not (user.uid):
             raise InvalidInputException
 
         # Check against db
-        existing_user = self.user_store.get_by_username(user.username)[0]
+        existing_user = self.user_store.get_by_uid(user.uid)
         if not existing_user:
             raise InvalidInputException
 
@@ -78,20 +100,20 @@ class UserService(Service):
         existing_user.bio = user.bio
         return self.user_store.update_user(existing_user)
 
-    def delete_user(self, username: str) -> User:
+    def delete_user(self, uid: str) -> User:
         """
         Delete user.
 
         Args:
-            username (str): username to remove
+            uid (str): unique user identifier
 
         Returns:
             User: Removed user
         """
 
-        # Check username doesn't exist
-        if not self.user_store.get_by_username(username):
+        # Check uid doesn't exist
+        if not self.user_store.uid_exists(uid):
             raise InvalidInputException
 
         # Delete
-        return self.user_store.delete_by_username(username)
+        return self.user_store.delete_by_uid(uid)

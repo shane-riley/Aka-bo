@@ -81,7 +81,7 @@ def setup_pages(app: Akabo):
 # @app.route('/send', methods=['POST', 'GET'])
 # def checkUser():
 #     # return flask.redirect("/s/WelcomePage.html", code=302)
-#     # result = flask.request.json
+#     # result = flask.request.args
 #     result = flask.request.form
 
 #     id_token = result['token']

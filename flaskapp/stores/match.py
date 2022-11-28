@@ -48,17 +48,17 @@ class MatchStore(Store):
         """
         return super().get_object_by_field(MatchTicket, 'uuid', uuid)
 
-    def get_by_username(self, username: str) -> List[MatchTicket]:
+    def get_by_uid(self, uid: str) -> List[MatchTicket]:
         """
         Get user's matchmaking tickets (valid only)
 
         Args:
-            username (str): username
+            uid (str): user id
 
         Returns:
-            List[MatchTicket]: MatchTickets for username
+            List[MatchTicket]: MatchTickets for user id
         """
-        return super().get_objects_by_field(MatchTicket, 'username', username)
+        return super().get_objects_by_field(MatchTicket, 'uid', uid)
 
     def delete_by_uuid(self, uuid: str) -> Optional[MatchTicket]:
         """

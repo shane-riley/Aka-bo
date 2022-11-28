@@ -32,12 +32,12 @@ class Akabo(flask.Flask):
         ms = MatchStore()
 
         self.user_service = UserService(us)
-        self.match_service = MatchService(gs, ms)
+        self.match_service = MatchService(gs, ms, us)
         self.game_service = GameService(gs, us)
     
     def setup_routes(self):
         """
-        Setup all of the routes
+        Setup all of the routes 
         """
         
         # This has to be here for nasty circular dependency reasons

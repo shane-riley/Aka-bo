@@ -46,18 +46,18 @@ class GameStore(Store):
         """
         return super().get_object_by_field(Game, 'uuid', uuid)
     
-    def get_by_username(self, username: str) -> List[Game]:
+    def get_by_uid(self, uid: str) -> List[Game]:
         """
         Get user's games
 
         Args:
-            username (str): username
+            uid (str): unique use identifier
 
         Returns:
-            List[Game]: Games for username
+            List[Game]: Games for uid
         """
-        return super().get_objects_by_field(Game, 'player_one', username).extend(
-               super().get_objects_by_field(Game, 'player_two', username))
+        return super().get_objects_by_field(Game, 'player_one', uid).extend(
+               super().get_objects_by_field(Game, 'player_two', uid))
     
     def delete_by_uuid(self, uuid: str) -> Optional[Game]:
         """

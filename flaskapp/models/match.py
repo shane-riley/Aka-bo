@@ -12,7 +12,7 @@ class MatchTicket(Model):
     KIND = 'Ticket'
 
     def __init__(self, 
-                 username="",
+                 uid="",
                  created=datetime.now(tz=timezone.utc),
                  polled=datetime.now(tz=timezone.utc)):
         """
@@ -24,12 +24,12 @@ class MatchTicket(Model):
             created (float, optional): _description_. Defaults to datetime.now().timestamp().
         """
 
-        self.username = username
+        self.uid = uid  # User id
         self.created = created
         self.polled = polled
         self.expires = created + POLLING_TIMEOUT
-        self.uuid = str(uuid.uuid4())
-        self.gameuuid = ""
+        self.uuid = str(uuid.uuid4())  # Ticket id
+        self.gameuuid = ""  # Game id
     
     def is_filled(self) -> bool:
         """
