@@ -1,6 +1,6 @@
 from datetime import timedelta
 from functools import wraps
-from flask import jsonify, request, make_response
+from flask import jsonify, request, make_response, redirect
 from firebase_admin import auth
 
 # API ROOT
@@ -13,6 +13,9 @@ NCONNECT = 4
 
 # AUTH
 DO_AUTHORIZATION = False
+
+# Display test page
+TESTING_MODE = True
 
 # Various exceptions for global use
 
@@ -55,6 +58,19 @@ def check_token(f):
         return f(*args, **kwargs)
     return wrap
 
+# Secure route
+def secure_route(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if DO_AUTHORIZATION:
+            if not request.headers.get('authorization'):
+                return redirect("/s/login.html", code=302)
+            try:
+                auth.verify_id_token(request.headers['authorization'])
+            except:
+                return redirect("/s/login.html", code=302)
+        return f(*args, **kwargs)
+    return wrap
 
 # Timeouts
 GAME_TIMEOUT = timedelta(hours=1)

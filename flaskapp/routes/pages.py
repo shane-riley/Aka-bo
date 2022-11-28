@@ -1,9 +1,19 @@
 import flask
 from firebase_admin import auth 
 from flaskapp import Akabo
+from flaskapp.shared import *
 
 # Add pages api routes
 def setup_pages(app: Akabo):
+
+    if TESTING_MODE:
+        # Test page
+        @app.route('/test')
+        def test_page():
+            """
+            Main page route.
+            """
+            return flask.redirect("/s/test.html", code=302)
 
     # Main page
     @app.route('/')
@@ -21,34 +31,33 @@ def setup_pages(app: Akabo):
         """
         return flask.redirect("/s/login.html", code=302)
         
-    # Profile Page
+    # Profile Page (redirect if not logged in)
     @app.route('/profilepage')
+    @secure_route
     def profilepage_page():
         """
         Profile Page Route
         """
         return flask.redirect("/s/profilepage.html", code=302)
 
-    # Usermod page (drop to login if not authorized)
-    @app.route('/user/<string:username>')
-    def usermod_page(username):
+    # Matchmaking page (redirect if not logged in)
+    @app.route('/matchmaking')
+    @secure_route
+    def usermod_page():
         """
         User modification page route.
 
         If not logged in, drop to login page
         """
-        # TODO: Implement me
-        return login_page()
+        return flask.redirect("/s/matchmaking.html", code=302)
 
-    # Game page
+    # Game page (redirect if not logged in)
     @app.route('/game')
-    def game_page(game, ticket):
+    @secure_route
+    def game_page():
         """
         User game page route.
 
         If not logged in, drop to login page
-
-        If gameid doesn't match with the user, return a 404
         """
-        # TODO: Implement me
-        return login_page()
+        return flask.redirect("/s/connect4.html", code=302)
