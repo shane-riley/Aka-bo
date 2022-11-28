@@ -8,10 +8,20 @@
 body {
     background-color: var(--blu);
     background-size: cover;
-    /* min-width: 800px; */
+    min-width: 800px;
+}
+.desktopscreen {
+
+    overflow:hidden;
+    overflow-x: hidden;
+
 }
 
 .rectangle1 {
+    /* align-items: center;
+    justify-content: center;
+    width: 1394.18px;
+    height: 213px; */
     position: relative;
     margin: auto;
     width: 70vw;
@@ -43,40 +53,38 @@ body {
 }
 
 .rectangle2 {
-    position: relative;
-    width: 65vw;
-    height: 20vw;
-    margin: auto;
-    top: 200px;
-    min-width: 650px;
-    min-height: 350px;;
+    position: absolute;
+    width: 1121px;
+    height: 408px;
+    left: 158px;
+    top: 406px;
     background: #F4CD00;
     background-blend-mode: darken;
     mix-blend-mode: normal;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 67px;
-    text-align: center;
 }
 
 .choosegame {
     position: absolute;
-    display: flex;
-    
-    transform: translate(43%, 0);
-    font-size: max(calc(1.5vw * 3), 45px);
-    min-width: auto;
+    width: 700px;
+    height: 98px;
+    left: 318px;
+    top: 7px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
+    font-size: 63.3962px;
+    line-height: 154.52%;
     color: #000000;
 }
 
 .gamebutton {
     position: absolute;
-    transform: translate(-50%, 50%);
-    width: max(calc(4vw * 3), 175px);
-    height: max(calc(4vw * 3), 175px);
-
+    width: 283px;
+    height: 241px;
+    left: 420px;
+    top: 127px;
     background-color: #000000;
 }
 
@@ -99,9 +107,9 @@ body {
 
 .con4pic {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 1px;
+    width: 233px;
+    height: 241px;
+    left: 25px;
     top: 0px;
     border-radius: 10px;
 
@@ -118,55 +126,190 @@ body {
     -ms-transform: translate(-50%, -50%);
 }
 
-/* .loginbutton {
+.loginbutton {
     position: absolute;
     width: 376px;
     height: 65px;
+    left: 532px;
+    top: 292px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     border-radius: 50px;
-} */
+}
 
-.buttonrow {
-    position: relative;
-    margin: auto;
-    width: 20vw;
-    height: 6vw;
-    top: 100px;
-    min-width: 200px;
-    min-height: 65px;
-
+.rectangle3 {
+    position: absolute;
+    width: 376px;
+    height: 65px;
+    left: 0px;
+    top: 0px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     background: var(--yell);
     border-radius: 50px;
 }
 
-.rectangle {
-    position: relative;
-    text-align: center;
-    padding: 5px;
-
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    background-color: var(--yell);
-    color: var(--yell);
-    border-radius: 50px;
-}
-
-.yellow-text {
-    color: var(--yell);
-    font-family: 'Inter';
-}
-
 .loginword {
     position: absolute;
-    display: flex;
-    top: 50%;
-
-    font-size: max(calc(1.3vw * 3.5),45px);
-    transform: translate(36%, -50%);
+    width: 305px;
+    height: 65px;
+    left: 35px;
+    top: 0px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
+    font-size: 48px;
+    line-height: 154.52%;
     text-align: center;
     color: #000000;
 }
+
+:root {
+    --yell: #f4cd00;
+    --blu: #476499;
+}
+
+
+ 
+.loginBox {
+    float: left;
+    margin-top: 50px;
+    width: 600px;
+    height: 500px;
+    /* left: 158px;
+    top: 406px; */
+    background: #F4CD00;
+    background-blend-mode: darken;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 67px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 63.3962px;
+    line-height: 154.52%;
+    color: #000000;
+    text-align: center;
+}
+.newMemberBox{
+    position: relative;
+    margin-top: 50px;
+    float: right;
+    width: 600px;
+    height: 500px;
+    /* left: 158px;
+    top: 406px; */
+    background: #F4CD00;
+    background-blend-mode: darken;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 67px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 63.3962px;
+    line-height: 154.52%;
+    color: #000000;
+    text-align: center;
+    
+   
+}
+.akaBox{
+    
+    margin: auto;
+    width: 60%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 150;
+    color: #000000;
+    width: 500px;
+    height: 200px;
+    /* left: 158px;
+    top: 406px; */
+    background: #F4CD00;
+    background-blend-mode: darken;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 67px;
+    text-align: center;
+}
+.inputUser{
+    /* margin:auto; */
+    border-radius: 25px;
+    position:relative;
+    height: 60px;
+    width: 300px;
+    font-size: 20pt;
+    font-family: 'Inter';
+    font-style: normal;
+
+
+}
+.inputPassword{
+    margin-top: 30px;
+    border-radius: 25px;
+    /* margin:auto; */
+    height: 60px;
+    width: 300px;
+    font-size: 20pt;
+    font-family: 'Inter';
+    font-style: normal;
+
+}
+.submitButton{
+    margin-top: 30px;
+    border-radius: 25px;
+    /* margin:auto; */
+    height: 80px;
+    width: 200px;
+    font-size: 20pt;
+    font-family: 'Inter';
+    font-style: normal;
+
+
+}
+.submitButton1{
+    margin-top: 120px;
+    border-radius: 25px;
+    /* margin:auto; */
+    height: 80px;
+    width: 200px;
+    font-size: 20pt;
+    font-family: 'Inter';
+    font-style: normal;
+
+
+}
+.returnToMain{
+    padding: 10px;
+    position: relative;
+    left: 0px;
+    width: 200px;
+    height: 100px;
+    background: #F4CD00;
+    background-blend-mode: darken;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 25px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 20;
+    font-size: 30px;
+    line-height: 100%;
+    color: #000000;
+    text-align: center;
+
+
+
+}
+
+
+/* span + span{
+
+    margin-top: 20px;
+
+} */
+
+
+
+
 
