@@ -12,6 +12,14 @@ def setup_pages(app: Akabo):
         app (Akabo): flaskapp
     """
 
+    # API Test page
+    @app.route('/test')
+    def test_page():
+        """
+        Test page route.
+        """
+        return flask.redirect("/s/test.html", code=302)
+
     # Main page
     @app.route('/')
     def index_page():

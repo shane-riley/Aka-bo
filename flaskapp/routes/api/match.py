@@ -25,13 +25,13 @@ def setup_match_api(app: Akabo):
             return make_response(jsonify(mt.serialize()), 200)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except DuplicateException as e:
             print(e)
-            return make_response("User already has ticket.", 400)
+            return make_response(jsonify({"message": "User has ticket."}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
 
     # DELETE /matchmaking: Delete a ticket
     @app.route(API_ROOT+"/matchmaking", methods=['DELETE'])
@@ -46,13 +46,13 @@ def setup_match_api(app: Akabo):
             return make_response(jsonify(mt.serialize()), 200)
         except NoMatchException as e:
             print(e)
-            return make_response("Ticket not found.", 400)
+            return make_response(jsonify({"message": "No match found."}), 400)
         except UnauthorizedException as e:
             print(e)
-            return make_response("Unauthorized.", 401)
+            return make_response(jsonify({"message": "Unauthorized."}), 401)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
 
     # GET /matchmaking: Poll a ticket
     @app.route(API_ROOT+"/matchmaking", methods=['GET'])
@@ -67,10 +67,10 @@ def setup_match_api(app: Akabo):
             return make_response(jsonify(mt.serialize()), 200)
         except NoMatchException as e:
             print(e)
-            return make_response("Ticket not found.", 400)
+            return make_response(jsonify({"message": "No match found."}), 400)
         except UnauthorizedException as e:
             print(e)
-            return make_response("Unauthorized.", 401)
+            return make_response(jsonify({"message": "Unauthorized."}), 401)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)

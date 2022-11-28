@@ -1,6 +1,6 @@
 from datetime import timedelta
 from functools import wraps
-from flask import request, make_response
+from flask import jsonify, request, make_response
 from firebase_admin import auth
 
 # API ROOT
@@ -42,12 +42,12 @@ def check_token(f):
     def wrap(*args, **kwargs):
         if DO_AUTHORIZATION:
             if not request.headers.get('authorization'):
-                return make_response("Unauthorized.", 401)
+                return make_response(jsonify({"message": "Unauthorized."}), 401)
             try:
                 uid = auth.verify_id_token(request.headers['authorization'])
                 request.uid = uid
             except:
-                return make_response("Unauthorized.", 401)
+                return make_response(jsonify({"message": "Unauthorized."}), 401)
         else:
             request.uid = request.args.get('uid')
             if not request.uid:

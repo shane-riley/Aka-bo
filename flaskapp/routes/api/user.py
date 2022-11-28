@@ -29,13 +29,13 @@ def setup_user_api(app: Akabo):
             return make_response(jsonify(u.serialize()), 200)
         except NoMatchException as e:
             print(e)
-            return make_response("No Match Found.", 400)
+            return make_response(jsonify({"message": "No match found."}), 400)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
 
 
 
@@ -57,13 +57,13 @@ def setup_user_api(app: Akabo):
             return make_response(jsonify(u.serialize()), 200)
         except DuplicateException as e:
             print(e)
-            return make_response("User already exists.", 400)
+            return make_response(jsonify({"message": "User already exists."}), 400)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
 
     # PUT /user : Modify a user
     @app.route(API_ROOT+"/user", methods=['PUT'])
@@ -82,10 +82,10 @@ def setup_user_api(app: Akabo):
             return make_response(jsonify(u.serialize()), 200)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
 
     # DELETE /user : Delete a user
     @app.route(API_ROOT+"/user", methods=['DELETE'])
@@ -100,7 +100,7 @@ def setup_user_api(app: Akabo):
             return make_response(jsonify(u.serialize()), 200)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)

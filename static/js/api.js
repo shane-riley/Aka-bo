@@ -4,17 +4,18 @@ const API_ROOT = '/api/v1';
 
 const DO_AUTHORIZATION = false;
 
-async function akaAPIRequest(method, absLink, headers, body) {
+async function akaAPIRequest(method, absLink, headers) {
     // GENERAL API Request method
-    if (!absLink || !headers || !body) {
+    // No JSON bodies supported
+    if (!absLink || !headers) {
         throw new Error(`Missing a parameter for ${method}.`)
     }
     try {
         const rawResponse = await fetch(absLink, {
             method: method,
             headers: headers,
-            body: JSON.stringify(body)
         });
+
         const content = await rawResponse.json();
         return content;
     }
@@ -99,11 +100,13 @@ async function fbCreateUser(username, password) {
 // Login user
 export async function akaLogin(username, password) {
     // Actually just uses Firebase
+    // Throw if fails
     return await fbLogin(username, password);
 }
 
 export async function akaLogout() {
     // Actually just uses Firebase
+    // Throw if fails
     return await fbLogout();
 }
 
@@ -133,8 +136,7 @@ export async function akaCreateUser(username, email, password) {
 
     return await akaAPIRequest("POST",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -157,8 +159,7 @@ export async function akaGetUser(uid) {
 
     return await akaAPIRequest("GET",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -185,8 +186,7 @@ export async function akaUpdateUser(uid, bio) {
 
     return await akaAPIRequest("PUT",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -211,8 +211,7 @@ export async function akaDeleteUser(uid) {
 
     return await akaAPIRequest("DELETE",
                                API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -239,8 +238,7 @@ export async function akaCreateTicket(uid) {
 
     return await akaAPIRequest("POST",
                                API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -267,8 +265,7 @@ export async function akaPollTicket(ticket_uuid, uid) {
 
     return await akaAPIRequest("GET",
                                API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -295,8 +292,7 @@ export async function akaDeleteTicket(ticket_uuid, uid) {
 
     return await akaAPIRequest("DELETE",
                                API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -325,8 +321,7 @@ export async function akaPollGame(game_uuid, uid) {
 
     return await akaAPIRequest("GET",
                                API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -355,8 +350,7 @@ export async function akaMakeMove(game_uuid, uid, move) {
 
     return await akaAPIRequest("PUT",
                                API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }
 
 
@@ -383,6 +377,5 @@ export async function akaForfeitGame(game_uuid, uid) {
 
     return await akaAPIRequest("DELETE",
                                API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await getToken()),
-                               null);
+                               buildHeaders(await getToken()));
 }

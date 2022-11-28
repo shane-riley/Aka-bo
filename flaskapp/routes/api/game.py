@@ -26,10 +26,10 @@ def setup_game_api(app: Akabo):
             return make_response(jsonify(g.serialize()), 200)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": jsonify({"message": "Invalid input."})}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
 
     # PUT /game: Make a move
     @app.route(API_ROOT+"/game", methods=['PUT'])
@@ -46,13 +46,13 @@ def setup_game_api(app: Akabo):
             return make_response(jsonify(g.serialize()), 200)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except IllegalMoveException as e:
             print(e)
-            return make_response("Illegal move.", 400)
+            return make_response(jsonify({"message": "Illegal move."}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
     
 
     # DELETE /game: End game
@@ -69,7 +69,7 @@ def setup_game_api(app: Akabo):
             return make_response(jsonify(g.serialize()), 200)
         except InvalidInputException as e:
             print(e)
-            return make_response("Invalid input.", 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except Exception as e:
             print(e)
-            return make_response("Internal error.", 500)
+            return make_response(jsonify({"message": "Internal error."}), 500)
