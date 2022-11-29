@@ -1,22 +1,25 @@
 // Imports
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js"
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, getIdToken } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser, signOut, getIdToken } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"
 
 // Constants
 const API_ROOT = '/api/v1';
-const FIREBASE_KEY = "AIzaSyDjs3IrkfvnzrmkATrFvOUO1JEQESW5-8U";
-const FIREBASE_DOMAIN = "graycs1520.firebaseapp.com";
 const DO_AUTHORIZATION = true;
 
 // Init firebase whenever this file is pulled
-const FB_CONFIG = {
-    apiKey: FIREBASE_KEY,
-    authDomain: FIREBASE_DOMAIN
-};
+const firebaseConfig = {
+    apiKey: "AIzaSyC9fHWrPTpYImvef53lTOEq6WNgzcxoMhU",
+    authDomain: "projectsandbox-365201.firebaseapp.com",
+    projectId: "projectsandbox-365201",
+    storageBucket: "projectsandbox-365201.appspot.com",
+    messagingSenderId: "906527119033",
+    appId: "1:906527119033:web:b9fccade68a222b2126d68"
+  };
 
-const FB_APP = initializeApp(FB_CONFIG);
+
+export const FB_APP = initializeApp(firebaseConfig);
 console.log(FB_APP);
-const FB_AUTH = getAuth(FB_APP);
+export const FB_AUTH = getAuth(FB_APP);
 console.log(FB_AUTH)
 
 async function akaAPIRequest(method, absLink, headers) {
@@ -117,6 +120,14 @@ export async function fbCreateUser(email, password) {
     if (DO_AUTHORIZATION) {
         // Use firebase wrapper to create user
         return await createUserWithEmailAndPassword(getAuth(FB_APP), email, password);
+    }
+}
+
+export async function fbDeleteUser() {
+    
+    if (DO_AUTHORIZATION && fbIsLoggedIn()) {
+        // Use firebase wrapper to create user
+        return await deleteUser(fbUser());
     }
 }
 
@@ -230,6 +241,9 @@ export async function akaDeleteUser(uid) {
 
     // Returns a User object on success (see Python class User)
     // Throws a exception with message on failure
+
+    // Drop user
+    fbDeleteUser();
 
     const args = {
         uid: uid

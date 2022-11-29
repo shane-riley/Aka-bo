@@ -7,7 +7,7 @@ from firebase_admin import auth, initialize_app, credentials
 API_ROOT = "/api/v1"
 FIREBASE_KEY = "AIzaSyDjs3IrkfvnzrmkATrFvOUO1JEQESW5-8U"
 FIREBASE_DOMAIN = "graycs1520.firebaseapp.com"
-# cred = credentials.Certificate('.firebase-sdk.json')
+cred = credentials.Certificate('.firebase_credentials.json')
 
 # NCOL, NROW
 NCOL = 7
@@ -17,7 +17,7 @@ NCONNECT = 4
 # AUTH
 DO_AUTHORIZATION = True
 if DO_AUTHORIZATION:
-    initialize_app()
+    initialize_app(credential=cred)
 
 # Display test page
 TESTING_MODE = True
@@ -52,8 +52,8 @@ def check_token(f):
             if not request.headers.get('authorization'):
                 return make_response(jsonify({"message": "Unauthorized."}), 401)
             try:
-                uid = auth.verify_id_token(request.headers['authorization'])
-                request.uid = uid
+                u = auth.verify_id_token(request.headers['authorization'])
+                request.uid = u.get('uid')
             except:
                 return make_response(jsonify({"message": "Unauthorized."}), 401)
         else:
