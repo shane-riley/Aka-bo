@@ -1,6 +1,12 @@
+:root {
+    --yell: #f4cd00;
+    --blu: #476499;
+}
+
 body{
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+    background-color: var(--blu)
 }
 
 #board{
@@ -32,3 +38,90 @@ body{
 .yellow-piece{
     background-color: yellow;
 }
+
+.rectangle1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 670px;
+    height: 213px;
+    top: 700px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+}
+
+.rules {
+    position: absolute;
+    width: 1200px;
+    height: 10px;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%,-50%);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 154.52%;
+    color: #000000;
+}
+
+.description {
+    position: absolute;
+    width: 1200px;
+    height: 20px;
+    left: 50%;
+    top: 28%;
+    transform: translate(-50%,-50%);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 154.52%;
+    color: #000000;
+}
+
+.rectangle5 {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 150px;
+    top: 700px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+    min-width: 250px;
+    min-heigth: 120px;
+}
+
+.rectangle3 {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 150px;
+    top: 700px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+}
+
+.buttonline {
+  text-align: center;
+}
+
+.backtext {
+  position: absolute;
+  font-size: 40px;
+  left: 23%;
+  top: 23%;
+}
+
+.newgametext {
+  position: absolute;
+  font-size: 40px;
+  left: 23%;
+  top: 38%;
+}
+
