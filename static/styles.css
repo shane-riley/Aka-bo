@@ -219,7 +219,7 @@ body {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 150;
+    font-size: 150px;
     color: #000000;
     width: 500px;
     height: 200px;
@@ -298,9 +298,61 @@ body {
     color: #000000;
     text-align: center;
 
+}
+.matchMakingBox{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+
+      
+   display: block;
+    margin-left: auto;
+    margin-right:auto;
+    position: relative;
+    margin-top: 10px;
+    width: 1000px;
+    height: 500px;
+    background: #F4CD00;
+    background-blend-mode: darken;
+    mix-blend-mode: normal;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 67px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 63.3962px;
+    line-height: 154.52%;
+    color: #000000;
+    text-align: center;
+
+
+
 
 
 }
+.joinButton{
+    margin-top: 0px;
+    border-radius: 25px;
+  
+    height: 80px;
+    width: 200px;
+    font-size: 20pt;
+    font-family: 'Inter';
+    font-style: normal;
+
+
+}
+.leaveButton{
+    border-radius: 25px;
+    height: 80px;
+    width: 200px;
+    font-size: 20pt;
+    font-family: 'Inter';
+    font-style: normal;
+
+
+}
+
 
 
 /* span + span{
