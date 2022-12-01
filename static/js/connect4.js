@@ -1,7 +1,7 @@
 var playerRed = "R";
 var playerYellow = "Y";
 var currPlayer = playerRed;
-var gameState = "01010111111123456666";
+var gameState = "";
 
 var gameOver = false;
 var board;
@@ -33,7 +33,7 @@ function setGame() {
         }
         board.push(row);
     }
-    drawGame();
+    drawGame(gameState);
 }
 
 function setPiece() {
@@ -70,8 +70,8 @@ function setPiece() {
     checkWinner();
 }
 
-function drawGame() {
-    if (gameOver) {
+function drawGame(gameState) {
+    if (gameOver)  {
         return;
     }
 
