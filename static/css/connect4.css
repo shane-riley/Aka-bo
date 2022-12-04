@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css?family=Inter:400|Iceland:400|Jacques+Francois:400");
+
+:root {
+    --yell: #f4cd00;
+    --blu: #476499;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    background-color: var(--blu)
+}
+
+#board{
+    height: 540px;
+    width: 630px;
+    top: 50px;
+
+    background-color: blue;
+    border: 10px solid navy;
+
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tile{
+    height: 70px;
+    width: 70px;
+    margin: 5px;
+
+    background-color: white;
+    border-radius: 50%;
+    border: 5px solid navy;
+}
+
+.red-piece{
+    background-color:  red;
+}
+
+.yellow-piece{
+    background-color: yellow;
+}
+
+.rectangle1 {
+    position: relative;
+    margin: auto;
+    text-align: center;
+    width: 670px;
+    height: 750px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+}
+
+.rules {
+    position: absolute;
+    width: 1200px;
+    height: 10px;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%,-50%);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 60px;
+    line-height: 154.52%;
+    color: #000000;
+}
+
+.description {
+    position: absolute;
+    display: flex;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    top: 15%;
+    line-height: 154.52%;
+    color: #000000;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.rectangle5 {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 100px;
+    top: 700px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+}
+
+.rectangle3 {
+    display: inline-block;
+    width: 240px;
+    height: 100px;
+    margin-right: 50px;
+    margin-top: 100px;
+    background: #F4CD00;
+    border-radius: 71.6455px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+
+}
+
+.buttonline {
+  text-align: center;
+}
+
+.backtext {
+  position: absolute;
+  display: flex;
+  font-family: 'Inter';
+  font-style: normal;
+  color: #000000;
+  font-size: 35px;
+  font-weight: 400;
+  top: 50%;
+  transform: translate(20%, -50%);
+}
+
+.newgametext {
+  position: absolute;
+  display: flex;
+  font-family: 'Inter';
+  font-style: normal;
+  color: #000000;
+  font-size: 40px;
+  top: 50%;
+  transform: translate(9%, -50%);
+
+}
+

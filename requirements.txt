@@ -1,1 +1,5 @@
 Flask==2.1.0
+google-cloud-datastore
+uuid
+firebase
+firebase-admin
