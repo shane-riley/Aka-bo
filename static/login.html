@@ -1,51 +1,7 @@
 <html>
     <head>
-        <!-- <script type="module" src="./js/api.js" ></script> -->
         <script type = "module"src ="./js/login.js"></script>
-
-        <script>
-             /**
-         * initApp handles setting up UI event listeners and registering Firebase auth listeners:
-         *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
-         *    out, and that is where we update the UI.
-         */
-        function initApp() {
-        // Listening for auth state changes.
-            if(fbIsLoggedIn)
-            {
-                window.location.replace("index.html");
-            }
-            document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
-            document.getElementById('quickstart-sign-up').addEventListener('click', handleSignUp, false);
-        }
-
-        window.onload = function() {
-        initApp();
-        };
-        </script>
     </head>
-
-    <script>
-        /**
-        * Handles the sign in button press.
-        */
-    function toggleSignIn() {
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-
-        akaLogin(email, password); 
-    }
-
-        /**
-         * Handles the sign up button press.
-         */
-        function handleSignUp() {
-        var email = document.getElementById('newEmail').value;
-        var password = document.getElementById('newPassword').value;
-        var userName = document.getElementById('newUsername').value;
-        akaCreateUser(username, email, password);
-        }
-    </script>
 
     <title> Connect 4</title>
         <head>
