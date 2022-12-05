@@ -10,6 +10,9 @@ class MatchStore(Store):
     Inherits from Store
     """
 
+    def __init__(self, client):
+        super().__init__(client)
+
     def post_ticket(self, ticket: MatchTicket) -> MatchTicket:
         """
         Add a ticket to datastore

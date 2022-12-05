@@ -4,37 +4,50 @@
     <head>
         <title>Profile Page</title>
         <link rel="stylesheet" href="css/profilepage.css">
+        <link rel="stylesheet" href="css/styles.css">
         <link rel="shortcut icon" href="favicon.ico">
+        <script type="module" src ="./js/profilepage.js"></script>
     </head>
     
     <body>
-      <div class= "desktopscreen">
-        <div class= "rectangle1">
-          <div class= "profileheader">
-            Profile Page of Username
+      <a class="returnToMain" href="/">
+        Return
+      </a>
+      <div class="rectangle">
+        <div class="title-text">Your Profile</div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="round-rectangle row">
+            <label>
+              Username:
+            </label>
+            <div id="username"></div>
+          </div>
+          <div class="round-rectangle row">
+            <label>
+              Wins:
+            </label>
+            <div id="wins"></div>
+          </div>
+          <div class="round-rectangle row">
+            <label>
+              Losses:
+            </label>
+            <div id="losses"></div>
           </div>
         </div>
-        
-        <div class= "rectangle2">
-          <div class= "smallerheader">
-            Email of Username          
+        <div class="col">
+          <div class="rectangle">
+            <label>
+              Bio:
+            </label>
+            <br>
+            <textarea id="bio"></textarea>
+            <br>
+            <button id="updatebiobutton">Update Bio</button>
           </div>
         </div>
-        
-        <div class= "rectangle3">
-          <div class= "smallerheader">
-            Number of Wins:
-          </div>
-        </div>
-        
-        <div class= "rectangle4">
-          <div class= "smallerheader">
-            Number of Losses:
-           </div>
-        </div>
-        
-        <div class= rectangle5>
-          <div class= bioheader>
-            Bio:
+      </div>
     </body>
 <html>

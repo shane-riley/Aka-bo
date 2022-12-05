@@ -1,174 +1,208 @@
-var playerRed = "R";
-var playerYellow = "Y";
-var currPlayer = playerRed;
-var gameState = "01010111111123456666";
+import {akaMakeMove, akaForfeitGame, akaPollGame, fbUser, akaAuthStateChanged, akaGetUser} from "./api.js"
 
-var gameOver = false;
-var board;
+// Row major board
+var ROWS = 6;
+var COLS = 7;
 
-var rows = 6;
-var columns = 7;
-var currColumns = []; //keeps track of which row each column is at.
-
-window.onload = function() 
-{
-    setGame();
+let game = {
+    board: "",
+    state: "MOVE_ONE",
+    player_one: "",
+    player_two: "",
 }
 
-function setGame() {
-    board = [];
-    currColumns = [5, 5, 5, 5, 5, 5, 5];
+let player_one = {
+    username: ""
+}
 
-    for (let r = 0; r < rows; r++) {
-        let row = [];
-        for (let c = 0; c < columns; c++) {
+let player_two = {
+    username: ""
+}
+
+let player_you = 1;
+
+let your_move = 0;
+
+let gameuuid = "";
+
+// Onetime setup
+function setGame() {
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
             // JS
-            row.push(' ');
             // HTML
             let tile = document.createElement("div");
             tile.id = r.toString() + "-" + c.toString();
             tile.classList.add("tile");
-            tile.addEventListener("click", setPiece);
+            tile.addEventListener("click", makeMove);
             document.getElementById("board").append(tile);
         }
-        board.push(row);
     }
-    drawGame();
 }
 
-function setPiece() {
-    if (gameOver) {
-        return;
-    }
-
+function makeMove() {
     //get coords of that tile clicked
     let coords = this.id.split("-");
-    let r = parseInt(coords[0]);
     let c = parseInt(coords[1]);
-
-    // figure out which row the current column should be on
-    r = currColumns[c]; 
-
-    if (r < 0) { // board[r][c] != ' '
-        return;
+    console.log(c);
+    // Make a move with current user 
+    if (game.board.split(coords[1]).length - 1 < 6 && your_move) {
+        akaMakeMove(gameuuid, fbUser().uid, c).then((g) => draw(g))
     }
-
-    board[r][c] = currPlayer; //update JS board
-    let tile = document.getElementById(r.toString() + "-" + c.toString());
-    if (currPlayer == playerRed) {
-        tile.classList.add("red-piece");
-        currPlayer = playerYellow;
-    }
-    else {
-        tile.classList.add("yellow-piece");
-        currPlayer = playerRed;
-    }
-
-    r -= 1; //update the row height for that column
-    currColumns[c] = r; //update the array
-
-    checkWinner();
 }
 
-function drawGame() {
-    if (gameOver) {
-        return;
+function forfeitGame() {
+    akaForfeitGame(gameuuid, fbUser().uid).then((g) => draw(g));
+}
+
+function pollGame() {
+    akaPollGame(gameuuid, fbUser().uid).then((g) => draw(g));
+}
+
+function draw(g) {
+    game = g;
+    if (g) {
+        console.log(g);
+
+        // Draw players
+        document.querySelector("#playerOne").innerHTML = player_one.username;
+        document.querySelector("#playerTwo").innerHTML = player_two.username;
+
+        // Draw state
+        your_move = false;
+        switch(g.state) {
+            case "MOVE_ONE":
+                if (player_you === 1) {
+                    document.querySelector("#stateText").innerHTML = "Your move.";
+                    your_move = true;
+                } else {
+                    document.querySelector("#stateText").innerHTML = "Their move.";
+                }
+                break;
+            case "MOVE_TWO":
+                if (player_you === 2) {
+                    document.querySelector("#stateText").innerHTML = "Your move.";
+                    your_move = true;
+                } else {
+                    document.querySelector("#stateText").innerHTML = "Their move.";
+                }
+                break;
+            case "DRAW":
+                document.querySelector("#stateText").innerHTML = "Draw.";
+            case "WIN_ONE":
+            case "FF_TWO":
+            case "TIMEOUT_TWO":
+                if (player_you === 1) {
+                    document.querySelector("#stateText").innerHTML = "You Win!";
+                } else {
+                    document.querySelector("#stateText").innerHTML = "You Lose!";
+                }
+                break;
+            case "WIN_TWO":
+            case "FF_ONE":
+            case "TIMEOUT_ONE":
+                if (player_you === 2) {
+                    document.querySelector("#stateText").innerHTML = "You Win!";
+                } else {
+                    document.querySelector("#stateText").innerHTML = "You Lose!";
+                }
+                break;
+        }
+
+        // Draw board
+        drawBoard(g.board);
+
+        // Cause another
+        setTimeout(pollGame, 4000);
+
+    } else {
+        drawBoard("");
+    }
+}
+
+function drawBoard(boardString) {
+
+    // Clear existing
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            let tile = document.getElementById(`${r}-${c}`);
+            tile.classList.remove("red-piece");
+            tile.classList.remove("yellow-piece");
+        }
     }
 
-    var columnHeights = [0, 0, 0, 0, 0, 0, 0]
-
-    for(let i = 0; i < gameState.length; i++)
-    {
-        if (gameOver) {
-            return;
-        }
+    let board = new Array(ROWS);
+    for(let j = 0; j < ROWS; j++) {
+        board[j] = new Array(COLS).fill(0);
+    }
+    // Loop through drops
+    for(let i = 0; i < boardString.length; i++)
+    {        
+        // Column of drop
+        let currColumn = parseInt(boardString[i]); 
+        let player = (i % 2 === 0) ? 1 : 2;
         
-        let currColumn = parseInt(gameState[i]); 
-        let currRow = currColumns[currColumn];
+        console.log(boardString);
 
-        if(currRow < 0){
-            continue;
+        // Find row
+        let currRow = -1;
+        for(let j = ROWS - 1; j >= 0; j--)
+        {
+            // If row is empty
+            if (board[j][currColumn] === 0) {
+                currRow = j;
+                
+                break;
+            }
         }
 
-        board[currRow][currColumn] = currPlayer; 
+        // place player
+        board[currRow][currColumn] = player;
 
         let tile = document.getElementById(currRow.toString() + "-" + currColumn.toString());
-        if (currPlayer == playerRed) {
+        if (player === 1) {
             tile.classList.add("red-piece");
-            currPlayer = playerYellow;
         }
         else {
             tile.classList.add("yellow-piece");
-            currPlayer = playerRed;
-        }
-
-        currRow -= 1; //update the row height for that column
-        currColumns[currColumn] = currRow; //update the array
-        checkWinner();
-    }
-}
-
-function checkWinner() {
-     // horizontal
-     for (let r = 0; r < rows; r++) {
-         for (let c = 0; c < columns - 3; c++){
-            if (board[r][c] != ' ') {
-                if (board[r][c] == board[r][c+1] && board[r][c+1] == board[r][c+2] && board[r][c+2] == board[r][c+3]) {
-                    setWinner(r, c);
-                    return;
-                }
-            }
-         }
-    }
-
-    // vertical
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows - 3; r++) {
-            if (board[r][c] != ' ') {
-                if (board[r][c] == board[r+1][c] && board[r+1][c] == board[r+2][c] && board[r+2][c] == board[r+3][c]) {
-                    setWinner(r, c);
-                    return;
-                }
-            }
-        }
-    }
-
-    // anti diagonal
-    for (let r = 0; r < rows - 3; r++) {
-        for (let c = 0; c < columns - 3; c++) {
-            if (board[r][c] != ' ') {
-                if (board[r][c] == board[r+1][c+1] && board[r+1][c+1] == board[r+2][c+2] && board[r+2][c+2] == board[r+3][c+3]) {
-                    setWinner(r, c);
-                    return;
-                }
-            }
-        }
-    }
-
-    // diagonal
-    for (let r = 3; r < rows; r++) {
-        for (let c = 0; c < columns - 3; c++) {
-            if (board[r][c] != ' ') {
-                if (board[r][c] == board[r-1][c+1] && board[r-1][c+1] == board[r-2][c+2] && board[r-2][c+2] == board[r-3][c+3]) {
-                    setWinner(r, c);
-                    return;
-                }
-            }
         }
     }
 }
 
-function setWinner(r, c) {
-    let winner = document.getElementById("winner");
-    // console.log("Game end");
-    if (board[r][c] == playerRed) {
-        winner.innerText = "Red Wins";             
+akaAuthStateChanged((user) => {
+    if (user) {
+
+        // Set game
+        setGame();
+        gameuuid = sessionStorage.getItem("gameuuid");
+
+        // Load game
+        akaPollGame(gameuuid, fbUser().uid).then((game) => {
+
+            // Load players
+            akaGetUser(game.player_one).then((user) => {
+                player_one = user;
+                document.querySelector("#playerOne").innerHTML = player_one.username;
+            });
+            akaGetUser(game.player_two).then((user) => {
+                player_two = user;
+                document.querySelector("#playerOne").innerHTML = player_two.username;
+            });
+
+            // Update which is you
+            if (game.player_one === fbUser().uid) {
+                player_you = 1;
+            } else {
+                player_you = 2;
+            }
+
+            // draw board
+            draw(game);
+        })
+
     } else {
-        winner.innerText = "Yellow Wins";
+        window.location.href = "/login";
     }
-    gameOver = true;
-}
+});
 
-function restartGame(){
-    location.reload();
-} 
+document.querySelector("#forfeitButton").addEventListener("click", forfeitGame, false);

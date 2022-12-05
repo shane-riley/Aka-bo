@@ -5,23 +5,42 @@
         <title>connect4</title>
 
         <link rel="stylesheet" href="css/connect4.css">
-        <script src="./js/connect4.js" ></script>
+        <script type="module" src="./js/connect4.js" ></script>
         <link rel="shortcut icon" href="favicon.ico">
     </head>
     <body>
     <div class="gamescreen">
         
-        <!--this should be where the game board goes, not sure how to do this-->
-        <h2 id="winner"></h2>
-        <div id="board"></div>
-        <bk></bk><bk></bk>
-
-      <div class = "buttoneline">
-        <div class="rectangle3" onclick="window.location.href = '/matchmaking';">
-            <span class="newgametext">New game</span> 
+        <div class="row">
+          <div class="round-rectangle col">
+            <div class="row">
+              <div class="col">
+                <div>Player 1</div>
+                <div id="playerOne"></div>
+              </div>
+              <div class="tile red-piece"></div>
+            </div>
+          </div>
+          <div class="round-rectangle col">
+            <div class="row">
+              <div class="col">
+                <div>Player 2</div>
+                <div id="playerTwo"></div>
+              </div>
+              <div class="tile yellow-piece"></div>
+            </div>
+          </div>
         </div>
-        <div class="rectangle5" onclick="window.location.href = '/mainpage';">
-            <span class="backtext">Back to<br/>Main Page</span>
+        <div id="board"></div>
+
+        <div class="c4font round-rectangle" id="stateText">Your move</div>
+
+      <div class = "row">
+        <div class="col round-rectangle" id="forfeitButton">
+          Forfeit game
+        </div>
+        <div class="col round-rectangle" onclick="window.location.href = '/';">
+          Back to<br/>Main Page
         </div>
       </div>
     </div>

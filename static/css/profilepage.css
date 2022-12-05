@@ -10,110 +10,48 @@ body {
     background-size: cover;
 }
 
-.rectangle1 {
+.row {
     display: flex;
-    align-items: center;
+}
+
+label {
+    flex: 0%;
+}
+
+.col {
+    flex: 50%;
+}
+
+.title-text {
+    text-align: center;
+    font-size: 80px;
+}
+
+.round-rectangle {
     justify-content: center;
-    width: 1394.18px;
-    height: 213px;
-    background: #F4CD00;
-    border-radius: 71.6455px;
+    background: var(--yell);
+    border-radius: 70px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
-  }
-  
- .profileheader {
-     position: absolute;
-     width: 1200px;
-     height: 120px;
-     left: 50%;
-     top: 50%;
-     transform: translate(-50%,-50%);
-     font-family: 'Inter';
-     font-style: normal;
-     font-weight: 400;
-     font-size: 77.8434px;
-     line-height: 154.52%;
-     color: #000000;
- }
- 
- .rectangle2 {
-     position: absolute;
-     width: 600px;
-     height: 200px;
-     left: 75px;
-     top: 300px;
-     background: #F4CD00;
-     background-blend-mode: darken;
-     mix-blend-mode: normal;
-     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-     border-radius: 67px;
- }
- 
- .smallerheader {
-     position: absolute;
-     width: 600px;
-     height: 200px;
-     left: 55%;
-     top: 85%;
-     transform: translate(-50%,-50%);
-     font-family: 'Inter';
-     font-style: normal;
-     font-weight: 400;
-     font-size: 40px;
-     line-height: 154.52%;
-     color: #000000;
- }
- 
- .rectangle3 {
-     position: absolute;
-     width: 600px;
-     height: 200px;
-     left: 75px;
-     top: 600px;
-     background: #F4CD00;
-     background-blend-mode: darken;
-     mix-blend-mode: normal;
-     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-     border-radius: 67px;
- }
- 
- .rectangle4 {
-     position: absolute;
-     width: 600px;
-     height: 200px;
-     left: 75px;
-     top: 900px;
-     background: #F4CD00;
-     background-blend-mode: darken;
-     mix-blend-mode: normal;
-     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-     border-radius: 67px;
- }
- 
- .rectangle5 {
-     position: absolute;
-     width: 600px;
-     height: 800px;
-     left: 700px;
-     top: 300px;
-     background: #F4CD00;
-     background-blend-mode: darken;
-     mix-blend-mode: normal;
-     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-     border-radius: 67px;
- }
- 
- .bioheader {
-     position: absolute;
-     width: 600px;
-     height: 200px;
-     left: 55%;
-     top: 17%;
-     transform: translate(-50%,-50%);
-     font-family: 'Inter';
-     font-style: normal;
-     font-weight: 400;
-     font-size: 40px;
-     line-height: 154.52%;
-     color: #000000;
- }
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    margin: 10px;
+    padding: 5px;
+}
+
+textarea {
+    width: 80%;
+}
+
+.rectangle {
+    justify-content: center;
+    background: var(--yell);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, .5));
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    margin: 10px;
+    padding: 5px;
+}

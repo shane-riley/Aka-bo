@@ -105,49 +105,50 @@ class GameService(Service):
         """
 
         # Grab game using uuid
-        game = self.game_store.get_by_uuid(uuid)
+        with self.game_store.get_client().transaction():
+            game = self.game_store.get_by_uuid(uuid)
 
-        # Cast
-        move = int(move)
+            # Cast
+            move = int(move)
 
-        # Ensure Game exists
-        if not game:
-            raise InvalidInputException
+            # Ensure Game exists
+            if not game:
+                raise InvalidInputException
 
-        # Ensure uid in game
-        if uid not in [game.player_one, game.player_two]:
-            raise InvalidInputException
+            # Ensure uid in game
+            if uid not in [game.player_one, game.player_two]:
+                raise InvalidInputException
 
-        # Ensure user is correct player
-        if uid == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
-            raise InvalidInputException
-        if uid == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
-            raise InvalidInputException
+            # Ensure user is correct player
+            if uid == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
+                raise InvalidInputException
+            if uid == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
+                raise InvalidInputException
 
-        # Player is authorized to move
+            # Player is authorized to move
 
-        # Check legality of move
-        if not game.is_legal(move):
-            raise IllegalMoveException
+            # Check legality of move
+            if not game.is_legal(move):
+                raise IllegalMoveException
 
-        # Update the game with the move
-        game.apply_move(move)
+            # Update the game with the move
+            game.apply_move(move)
 
-        if GameState(game.state) == GameState.WIN_ONE:
-            self.log_win(game.player_one)
-            self.log_loss(game.player_two)
-        if GameState(game.state) == GameState.WIN_TWO:
-            self.log_win(game.player_two)
-            self.log_loss(game.player_one)
+            if GameState(game.state) == GameState.WIN_ONE:
+                self.log_win(game.player_one)
+                self.log_loss(game.player_two)
+            if GameState(game.state) == GameState.WIN_TWO:
+                self.log_win(game.player_two)
+                self.log_loss(game.player_one)
 
-        # Touch
-        if uid == game.player_one:
-            game.touch_1()
-        if uid == game.player_two:
-            game.touch_2()
+            # Touch
+            if uid == game.player_one:
+                game.touch_1()
+            if uid == game.player_two:
+                game.touch_2()
 
-        # Update and return
-        return self.game_store.update_game(game)
+            # Update and return
+            return self.game_store.update_game(game)
 
     # Forfeit game
     def forfeit_game(self, uuid: str, uid: str) -> Game:
@@ -167,36 +168,37 @@ class GameService(Service):
         """
 
         # Grab game using uuid
-        game = self.game_store.get_by_uuid(uuid)
+        with self.game_store.get_client().transaction():
+            game = self.game_store.get_by_uuid(uuid)
 
-        # Ensure Game exists
-        if not game:
-            raise InvalidInputException
+            # Ensure Game exists
+            if not game:
+                raise InvalidInputException
 
-        # Ensure uid in game
-        if uid not in [game.player_one, game.player_two]:
-            raise InvalidInputException
+            # Ensure uid in game
+            if uid not in [game.player_one, game.player_two]:
+                raise InvalidInputException
 
-        # Can only ff if it is the player's move
-        if uid == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
-            raise InvalidInputException
-        if uid == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
-            raise InvalidInputException
+            # Can only ff if it is the player's move
+            if uid == game.player_one and GameState(game.state) != GameState.MOVE_ONE:
+                raise InvalidInputException
+            if uid == game.player_two and GameState(game.state) != GameState.MOVE_TWO:
+                raise InvalidInputException
 
-        # ff is valid
-        if uid == game.player_one:
-            game.state = GameState.FF_ONE.value
-            self.log_loss(game.player_one)
-            self.log_win(game.player_two)
-            game.touch_1()
-        if uid == game.player_two:
-            game.state = GameState.FF_TWO.value
-            self.log_loss(game.player_two)
-            self.log_win(game.player_win)
-            game.touch_2()
-        
-        # Update and return
-        return self.game_store.update_game(game)
+            # ff is valid
+            if uid == game.player_one:
+                game.state = GameState.FF_ONE.value
+                self.log_loss(game.player_one)
+                self.log_win(game.player_two)
+                game.touch_1()
+            if uid == game.player_two:
+                game.state = GameState.FF_TWO.value
+                self.log_loss(game.player_two)
+                self.log_win(game.player_win)
+                game.touch_2()
+            
+            # Update and return
+            return self.game_store.update_game(game)
 
     # Poll for update 
     def poll_game(self, uuid: str, uid: str) -> Game:
@@ -212,29 +214,32 @@ class GameService(Service):
         """
 
         # Grab game using uuid
-        game = self.game_store.get_by_uuid(uuid)
+        with self.game_store.get_client().transaction():
+            game = self.game_store.get_by_uuid(uuid)
 
-        # Ensure Game exists
-        if not game:
-            raise InvalidInputException
+            # Ensure Game exists
+            if not game:
+                raise InvalidInputException
 
-        # Ensure uid in game
-        if uid not in [game.player_one, game.player_two]:
-            raise InvalidInputException
-        
-        # Touch and check for timeout
-        if uid == game.player_one:
-            game.touch_1()
-            if game.player_two_expires < datetime.now(tz=timezone.utc):
-                game.state = GameState.TIMEOUT_TWO.value
-                self.log_loss(game.player_two)
-                self.log_win(game.player_one)
-        if uid == game.player_two:
-            game.touch_2()
-            if game.player_one_expires < datetime.now(tz=timezone.utc):
-                game.state = GameState.TIMEOUT_ONE.value
-                self.log_loss(game.player_one)
-                self.log_win(game.player_two)
-        
-        # Store and return
-        return self.game_store.update_game(game)
+            # Ensure uid in game
+            if uid not in [game.player_one, game.player_two]:
+                raise InvalidInputException
+            
+            # Touch and check for timeout
+            if uid == game.player_one:
+                game.touch_1()
+                if game.player_two_expires < datetime.now(tz=timezone.utc):
+                    game.state = GameState.TIMEOUT_TWO.value
+                    self.log_loss(game.player_two)
+                    self.log_win(game.player_one)
+            if uid == game.player_two:
+                game.touch_2()
+                if game.player_one_expires < datetime.now(tz=timezone.utc):
+                    game.state = GameState.TIMEOUT_ONE.value
+                    self.log_loss(game.player_one)
+                    self.log_win(game.player_two)
+            
+            # Store and return
+            # TODO: wicked evil race condition happening rn
+            # return self.game_store.update_game(game)
+            return game

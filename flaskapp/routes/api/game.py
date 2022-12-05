@@ -26,7 +26,7 @@ def setup_game_api(app: Akabo):
             return make_response(jsonify(g.serialize()), 200)
         except InvalidInputException as e:
             print(e)
-            return make_response(jsonify({"message": jsonify({"message": "Invalid input."})}), 400)
+            return make_response(jsonify({"message": "Invalid input."}), 400)
         except Exception as e:
             print(e)
             return make_response(jsonify({"message": "Internal error."}), 500)

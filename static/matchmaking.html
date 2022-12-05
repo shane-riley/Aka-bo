@@ -5,43 +5,28 @@
   <title>Matchmaking Page</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="shortcut icon" href="favicon.ico">
+  <script type="module" src="./js/matchmaking.js"></script>
 </head>
 
 
-  <a class="returnToMain"
-            href="index.html">
-            Return
-        </a>
+<a class="returnToMain" href="/">
+  Return
+</a>
 
 
-        <div class="akaBox">
-        
-          
-            Akabo
-        </div>
+<div class="akaBox">
+  Akabo
+</div>
 
-      <div class="matchMakingBox">
-
-        
-          Matchmaking
-      <div> 
-        <img src="img/Handshake.png"
-        style="width: 300px">
-        
-      </div>
-
-      
-          <input type="button" value="Join Game" class="joinButton">
-    
- 
-     
-        <input type="button" value="Quit" class="leaveButton">
-        
-     
-
-
-      
-      </div>
+<div class="matchMakingBox">
+  Matchmaking
+  <div>
+    <img src="img/Handshake.png" style="width: 300px">
+  </div>
+  <input type="button" id="joinButton" value="Join Queue" class="joinButton">
+  <input type="button" id="leaveButton" value="Leave Queue" class="joinButton">
+  <div id="gameFound" style="display:none;">Game found!</div>
+</div>
 
 
 

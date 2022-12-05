@@ -1,6 +1,7 @@
 import flask
 from flaskapp.services import GameService, MatchService, UserService
 from flaskapp.stores import GameStore, MatchStore, UserStore
+from google.cloud import datastore
 
 class Akabo(flask.Flask):
     """
@@ -27,9 +28,9 @@ class Akabo(flask.Flask):
         Add services to app
         """
 
-        us = UserStore()
-        gs = GameStore()
-        ms = MatchStore()
+        us = UserStore(datastore.Client())
+        gs = GameStore(datastore.Client())
+        ms = MatchStore(datastore.Client())
 
         self.user_service = UserService(us)
         self.match_service = MatchService(gs, ms, us)

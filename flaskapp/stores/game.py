@@ -7,6 +7,9 @@ class GameStore(Store):
     """
     Class for storing Games
     """
+
+    def __init__(self, client):
+        super().__init__(client)
     
     def post_game(self, game: Game) -> Game:
         """

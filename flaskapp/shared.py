@@ -67,13 +67,14 @@ def check_token(f):
 def secure_route(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if DO_AUTHORIZATION:
-            if not request.headers.get('authorization'):
-                return redirect("/s/login.html", code=302)
-            try:
-                auth.verify_id_token(request.headers['authorization'])
-            except:
-                return redirect("/s/login.html", code=302)
+        # TODO: Decide how to do secure routing
+        # if DO_AUTHORIZATION:
+        #     if not request.headers.get('authorization'):
+        #         return redirect("/s/login.html", code=302)
+        #     try:
+        #         auth.verify_id_token(request.headers['authorization'])
+        #     except:
+        #         return redirect("/s/login.html", code=302)
         return f(*args, **kwargs)
     return wrap
 
