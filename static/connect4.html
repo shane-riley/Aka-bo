@@ -5,16 +5,35 @@
         <title>connect4</title>
 
         <link rel="stylesheet" href="css/connect4.css">
-        <script src="./js/connect4.js" ></script>
+        <script type="module" src="./js/connect4.js" ></script>
         <link rel="shortcut icon" href="favicon.ico">
     </head>
     <body>
     <div class="gamescreen">
         
-        <!--this should be where the game board goes, not sure how to do this-->
-        <h2 id="winner"></h2>
+        <div class="row">
+          <div class="round-rectangle col">
+            <div class="row">
+              <div class="col">
+                <div>Player 1</div>
+                <div id="playerOne">asdf</div>
+              </div>
+              <div class="tile red-piece"></div>
+            </div>
+          </div>
+          <div class="round-rectangle col">
+            <div class="row">
+              <div class="col">
+                <div>Player 2</div>
+                <div id="playerTwo">asdf</div>
+              </div>
+              <div class="tile yellow-piece"></div>
+            </div>
+          </div>
+        </div>
         <div id="board"></div>
-        <bk></bk><bk></bk>
+
+        <div class="c4font round-rectangle" id="stateText">Your move</div>
 
       <div class = "buttoneline">
         <div class="rectangle3" onclick="window.location.href = '/matchmaking';">
