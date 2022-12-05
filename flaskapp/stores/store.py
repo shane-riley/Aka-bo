@@ -5,16 +5,16 @@ from datetime import datetime
 class Store:
     """Baseclass for Storing objects 
     """
-
-    def __init__(self):
-        pass
+    
+    def __init__(self, client):
+        self.client = client
 
     def get_client(self):
         """Get a datastore client
 
         NOTE: implicitly uses envvar for project name
         """
-        return datastore.Client()
+        return self.client;
 
     def update_object(self, Model, obj, key, value):
         """

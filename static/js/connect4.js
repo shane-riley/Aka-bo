@@ -5,18 +5,18 @@ var ROWS = 6;
 var COLS = 7;
 
 let game = {
-    board: "0000",
-    state: "FF_TWO",
+    board: "",
+    state: "MOVE_ONE",
     player_one: "",
     player_two: "",
 }
 
 let player_one = {
-    username: "UserOne"
+    username: ""
 }
 
 let player_two = {
-    username: "UserTwo"
+    username: ""
 }
 
 let player_you = 1;
@@ -51,17 +51,18 @@ function makeMove() {
     }
 }
 
+function forfeitGame() {
+    akaForfeitGame(gameuuid, fbUser().uid).then((g) => draw(g));
+}
+
 function pollGame() {
     akaPollGame(gameuuid, fbUser().uid).then((g) => draw(g));
 }
 
 function draw(g) {
     game = g;
-
-    if (g.board.length > game.board.length) {
-        g = game;
-    }
     if (g) {
+        console.log(g);
 
         // Draw players
         document.querySelector("#playerOne").innerHTML = player_one.username;
@@ -112,7 +113,7 @@ function draw(g) {
         drawBoard(g.board);
 
         // Cause another
-        setTimeout(pollGame, 2000);
+        setTimeout(pollGame, 4000);
 
     } else {
         drawBoard("");
@@ -120,6 +121,15 @@ function draw(g) {
 }
 
 function drawBoard(boardString) {
+
+    // Clear existing
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            let tile = document.getElementById(`${r}-${c}`);
+            tile.classList.remove("red-piece");
+            tile.classList.remove("yellow-piece");
+        }
+    }
 
     let board = new Array(ROWS);
     for(let j = 0; j < ROWS; j++) {
@@ -194,3 +204,5 @@ akaAuthStateChanged((user) => {
         window.location.href = "/login";
     }
 });
+
+document.querySelector("#forfeitButton").addEventListener("click", forfeitGame, false);

@@ -64,52 +64,53 @@ class MatchService(Service):
         """
 
         # Grab the ticket
-        ticket = self.match_store.get_by_uuid(uuid)
+        with self.match_store.get_client().transaction():
+            ticket = self.match_store.get_by_uuid(uuid)
 
-        # Ensure ticket
-        if not ticket:
-            raise NoMatchException
+            # Ensure ticket
+            if not ticket:
+                raise NoMatchException
 
-        # Ensure authorization
-        if not uid == ticket.uid:
-            raise UnauthorizedException
+            # Ensure authorization
+            if not uid == ticket.uid:
+                raise UnauthorizedException
 
-        # If ticket is filled nothing to do
-        if ticket.is_filled():
-            # Nothing to do; touch
+            # If ticket is filled nothing to do
+            if ticket.is_filled():
+                # Nothing to do; touch
+                ticket.touch()
+                return self.match_store.update_ticket(ticket)
+
+            # else
+            # Attempt to fill ticket
+            # NOTE: There is a race condition here:
+            # What if the ticket gets filled right before we fill it?
+            # Treating this as unlikely for now and as a TODO
+            other_tickets = self.match_store.get_valid_tickets()
+            matched_ticket = next(filter(lambda tix: tix.uid != ticket.uid and not tix.gameuuid, other_tickets), None)
+
+            if not matched_ticket:
+                # Nothing to do; touch
+                ticket.touch()
+                return self.match_store.update_ticket(ticket)
+
+            # else
+            # Make a Game instance and point both tickets at it
+            player_one = ticket.uid
+            player_two = matched_ticket.uid
+            game = Game(player_one=player_one, player_two=player_two)
+
+            # Store game
+            self.game_store.post_game(game)
+
+            # Mark tickets
+            ticket.gameuuid = game.uuid
+            matched_ticket.gameuuid = game.uuid
             ticket.touch()
+
+            # Save the marked tickets
+            self.match_store.update_ticket(matched_ticket)
             return self.match_store.update_ticket(ticket)
-
-        # else
-        # Attempt to fill ticket
-        # NOTE: There is a race condition here:
-        # What if the ticket gets filled right before we fill it?
-        # Treating this as unlikely for now and as a TODO
-        other_tickets = self.match_store.get_valid_tickets()
-        matched_ticket = next(filter(lambda tix: tix.uid != ticket.uid and not tix.gameuuid, other_tickets), None)
-
-        if not matched_ticket:
-            # Nothing to do; touch
-            ticket.touch()
-            return self.match_store.update_ticket(ticket)
-
-        # else
-        # Make a Game instance and point both tickets at it
-        player_one = ticket.uid
-        player_two = matched_ticket.uid
-        game = Game(player_one=player_one, player_two=player_two)
-
-        # Store game
-        self.game_store.post_game(game)
-
-        # Mark tickets
-        ticket.gameuuid = game.uuid
-        matched_ticket.gameuuid = game.uuid
-        ticket.touch()
-
-        # Save the marked tickets
-        self.match_store.update_ticket(matched_ticket)
-        return self.match_store.update_ticket(ticket)
 
 
 

@@ -145,8 +145,7 @@ body{
 }
 
 .newgametext {
-  position: absolute;
-  display: flex;
+    text-align: center;
   font-family: 'Inter';
   font-style: normal;
   color: #000000;

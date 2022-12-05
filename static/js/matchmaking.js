@@ -41,7 +41,7 @@ function draw(t) {
             document.querySelector("#leaveButton").style.display = "";
 
             // Call again in two seconds
-            setTimeout(updateTicket, 2000);
+            setTimeout(updateTicket, 4000);
         }
     } else {
         console.log("No ticket.");

@@ -10,8 +10,8 @@ class UserStore(Store):
     NOTE: Inherits Store for general methods
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, client):
+        super().__init__(client)
 
     def post_user(self, user: User) -> User:
         """
