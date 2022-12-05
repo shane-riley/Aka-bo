@@ -1,96 +1,56 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <script type = "module"src ="./js/login.js"></script>
-    </head>
 
-    <title> Connect 4</title>
-        <head>
+<head>
+    <script type="module" src="./js/login.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>Connect 4</title>
+</head>
 
-            <link rel="stylesheet" href="css/styles.css">
-            <link rel="shortcut icon" href="favicon.ico">
+<body>
 
-        </head>
-        
-        <a class="returnToMain"
-            href="index.html">
-            Return
-        </a>
+    <a class="returnToMain" href="index.html">
+        Return
+    </a>
+    <div class="akaBox">
+        Akabo
+    </div>
 
+    <div class="loginBox">
+        <div>Login</div>
 
-        <div class="akaBox">
-        
-            Akabo
+        <div>
+            <input type="text" placeholder="Enter Email" name="email" id="email" required class="inputUser">
+        </div>
+        <div>
+            <input type="password" placeholder="Enter Password" name="psw" id="password" required class="inputPassword">
         </div>
 
+        <div>
+            <input type="button" value="Submit" class="submitButton1" id="submitLogin" onclick="">
+        </div>
+    </div>
 
-       
-        <form action="action_page.php" method="post">
-            <object class="loginBox">
-                    <text>
-                        Login:
-                    
-                        
-                    
-            
-                <div>
-                </div>
-                <!-- <label for="uname"><b>Username</b></label> -->
-                <input type="text" placeholder="Enter Username" name="email" id="email" required class="inputUser">
-                </div>
+    <div class="newMemberBox">
+        <div>
+            Create New User:</div>
 
-                <div>
+        <div>
+            <input type="text" placeholder="Enter Email" name="Emails" id="newEmail" required class="inputUser">
+        </div>
+        <div>
+            <input type="text" placeholder="Enter Username" name="newUsername" id="newUsername" required
+                class="inputPassword">
+        </div>
+        <div>
+            <input type="password" placeholder="Enter Password" name="newPassword" id="newPassword" required
+                class="inputPassword">
+        </div>
+        <div>
+            <input type="button" value="Submit" class="submitButton" id="submitNewUser">
+        </div>
+    </div>
 
-                    <input type="password" placeholder="Enter Password" name="psw" id="password" required
-                    class="inputPassword";>
-                </div>
-                
-                <div>
-                    <input type="button" value="Submit" class="submitButton1" id="quickstart-sign-in"
-                    onclick="submitLogin(userName,passW)">
-                </div>
-
-            </object>
-
-
-            <object class="newMemberBox">
-                <text>
-                    Create New User:
-                
-                </div>
-                
-                    <input type="text" placeholder="Enter Email" name="Emails" id="newEmail" required class="inputUser">
-  
-                </div>
-                
-        
-                    <div>
-
-                </div>
-                    <input type="text" placeholder="Enter Username" name="newUsername" id="newUsername" required class="inputPassword">
-                </div>
-                <div>
-                    <input type="password" placeholder="Enter Password" name="newPassword" id="newPassword" required
-                    class="inputPassword";>
-                </div>
-                <div>
-                </div>
-                <div>
-                    <input type="button" value="Submit" class="submitButton" id="quickstart-sign-up">
-                </div>
-            </object>
-        <!-- <script>
-                function submitLogin(){
-                    user=document.getElementById('userName').value
-                    password=document.getElementById('passW').value
-                    alert("Username is "+user+ " Password is "+password)
-        
-        
-                }
-                function submitNewUser(){
-                    email=document.getElementById('Email').value
-                    user=document.getElementById('nmUser').value
-                    password=document.getElementById('nmPassword').value
-                    alert("Email is "+email+ " Username is " +user+ " Password is "+password)
-                }
-        </script> -->
+</body>
 </html>

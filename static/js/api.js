@@ -1,6 +1,6 @@
 // Imports
-import {initializeApp} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js"
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser, signOut, getIdToken } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js"
+import { getAuth, setPersistence, onAuthStateChanged, browserSessionPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser, signOut, getIdToken } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"
 
 // Constants
 const API_ROOT = '/api/v1';
@@ -14,13 +14,26 @@ const firebaseConfig = {
     storageBucket: "projectsandbox-365201.appspot.com",
     messagingSenderId: "906527119033",
     appId: "1:906527119033:web:b9fccade68a222b2126d68"
-  };
+};
 
+// Startup ops
 
+// Initialize app
 export const FB_APP = initializeApp(firebaseConfig);
-console.log(FB_APP);
 export const FB_AUTH = getAuth(FB_APP);
-console.log(FB_AUTH)
+
+onAuthStateChanged(getAuth(FB_APP), (user) => {
+    if (user) {
+        console.log(`Logged in: ${user.uid}`);
+    } else {
+        console.log("Logged out.");
+    }
+});
+
+
+// API ops
+
+export function akaAuthStateChanged(b) { onAuthStateChanged(getAuth(FB_APP), b); }
 
 async function akaAPIRequest(method, absLink, headers) {
     // GENERAL API Request method
@@ -37,7 +50,7 @@ async function akaAPIRequest(method, absLink, headers) {
         const content = await rawResponse.json();
         return content;
     }
-    catch(err) {
+    catch (err) {
         console.error(`Error at fetch ${method}: ${err}`);
         throw err;
     }
@@ -46,7 +59,7 @@ async function akaAPIRequest(method, absLink, headers) {
 function urlWithArgs(url, args) {
     // url is address to ping
     // args are key value args
-    
+
     // Short circuit if no args
     if (args === null || Object.keys(args).length === 0) {
         return url;
@@ -64,14 +77,14 @@ function urlWithArgs(url, args) {
 
     }
     // Last char is a hanging ampersand--drop it
-    composite = composite.slice(0,-1);
+    composite = composite.slice(0, -1);
     return composite;
 }
 
 // Get token
-export async function fbGetToken() {
+async function fbGetToken() {
 
-    if (DO_AUTHORIZATION && fbIsLoggedIn()) {
+    if (DO_AUTHORIZATION && akaIsLoggedIn()) {
         return await getIdToken(fbUser(), false);
     }
     else {
@@ -80,7 +93,7 @@ export async function fbGetToken() {
     }
 }
 
-export function fbIsLoggedIn() {
+export function akaIsLoggedIn() {
     if (!DO_AUTHORIZATION) return true;
 
     return fbUser() !== null;
@@ -99,35 +112,35 @@ function buildHeaders(auth = null) {
 }
 
 // Firebase ops *********************************************************************
-export async function fbLogin(email, password) {
-    
+async function fbLogin(email, password) {
+
     if (DO_AUTHORIZATION) {
         // Use firebase wrapper to login
-        return await signInWithEmailAndPassword(getAuth(FB_APP), email, password);
+        return signInWithEmailAndPassword(getAuth(FB_APP), email, password);
     }
 }
 
-export async function fbLogout() {
-    
+async function fbLogout() {
+
     if (DO_AUTHORIZATION) {
         // Use firebase wrapper to logout
-        return await signOut(getAuth(FB_APP));
+        return signOut(getAuth(FB_APP));
     }
 }
 
-export async function fbCreateUser(email, password) {
-    
+async function fbCreateUser(email, password) {
+
     if (DO_AUTHORIZATION) {
         // Use firebase wrapper to create user
-        return await createUserWithEmailAndPassword(getAuth(FB_APP), email, password);
+        return createUserWithEmailAndPassword(getAuth(FB_APP), email, password);
     }
 }
 
-export async function fbDeleteUser() {
-    
-    if (DO_AUTHORIZATION && fbIsLoggedIn()) {
+async function fbDeleteUser() {
+
+    if (DO_AUTHORIZATION && akaIsLoggedIn()) {
         // Use firebase wrapper to create user
-        return await deleteUser(fbUser());
+        return deleteUser(fbUser());
     }
 }
 
@@ -138,13 +151,13 @@ export async function fbDeleteUser() {
 export async function akaLogin(username, password) {
     // Actually just uses Firebase
     // Throw if fails
-    return await fbLogin(username, password);
+    return fbLogin(username, password);
 }
 
 export async function akaLogout() {
     // Actually just uses Firebase
     // Throw if fails
-    return await fbLogout();
+    return fbLogout();
 }
 
 // Create user
@@ -164,6 +177,8 @@ export async function akaCreateUser(username, email, password) {
 
     // TODO: Create user with username and password (assume token stored at this point)
     // Only if auth on
+
+    // Must wait to get token
     await fbCreateUser(email, password);
 
     const args = {
@@ -171,15 +186,15 @@ export async function akaCreateUser(username, email, password) {
         email: email
     };
 
-    return await akaAPIRequest("POST",
-                               API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("POST",
+        API_ROOT + urlWithArgs("/user", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
 // Get user
 export async function akaGetUser(uid) {
-    
+
     // If auth is off, uid is same as username
 
     // GET request
@@ -194,9 +209,9 @@ export async function akaGetUser(uid) {
         uid: uid
     };
 
-    return await akaAPIRequest("GET",
-                               API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("GET",
+        API_ROOT + urlWithArgs("/user", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -221,9 +236,9 @@ export async function akaUpdateUser(uid, bio) {
         bio: bio
     };
 
-    return await akaAPIRequest("PUT",
-                               API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("PUT",
+        API_ROOT + urlWithArgs("/user", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -249,9 +264,9 @@ export async function akaDeleteUser(uid) {
         uid: uid
     };
 
-    return await akaAPIRequest("DELETE",
-                               API_ROOT+urlWithArgs("/user", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("DELETE",
+        API_ROOT + urlWithArgs("/user", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -276,9 +291,9 @@ export async function akaCreateTicket(uid) {
         uid: uid
     };
 
-    return await akaAPIRequest("POST",
-                               API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("POST",
+        API_ROOT + urlWithArgs("/matchmaking", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -303,9 +318,9 @@ export async function akaPollTicket(ticket_uuid, uid) {
         uuid: ticket_uuid
     };
 
-    return await akaAPIRequest("GET",
-                               API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("GET",
+        API_ROOT + urlWithArgs("/matchmaking", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -330,9 +345,9 @@ export async function akaDeleteTicket(ticket_uuid, uid) {
         uuid: ticket_uuid
     };
 
-    return await akaAPIRequest("DELETE",
-                               API_ROOT+urlWithArgs("/matchmaking", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("DELETE",
+        API_ROOT + urlWithArgs("/matchmaking", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -359,9 +374,9 @@ export async function akaPollGame(game_uuid, uid) {
         uuid: game_uuid
     };
 
-    return await akaAPIRequest("GET",
-                               API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("GET",
+        API_ROOT + urlWithArgs("/game", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -388,9 +403,9 @@ export async function akaMakeMove(game_uuid, uid, move) {
         move: move
     };
 
-    return await akaAPIRequest("PUT",
-                               API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("PUT",
+        API_ROOT + urlWithArgs("/game", args),
+        buildHeaders(await fbGetToken()));
 }
 
 
@@ -415,7 +430,7 @@ export async function akaForfeitGame(game_uuid, uid) {
         uuid: game_uuid
     };
 
-    return await akaAPIRequest("DELETE",
-                               API_ROOT+urlWithArgs("/game", args),
-                               buildHeaders(await fbGetToken()));
+    return akaAPIRequest("DELETE",
+        API_ROOT + urlWithArgs("/game", args),
+        buildHeaders(await fbGetToken()));
 }

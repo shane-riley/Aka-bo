@@ -1,8 +1,24 @@
-import {akaLogout, fbIsLoggedIn} from "./api.js"
+import {akaLogout, akaAuthStateChanged} from "./api.js"
 
-var logout = document.getElementById("Logout").addEventListener("click", LogOut, false);
+// Redirect on login
+akaAuthStateChanged((user) => { 
+    if (user) {
+        // Hide login
+        document.querySelector("#loginbutton").style.display = "none";
+        document.querySelector("#logoutbutton").style.display = "";
+        document.querySelector("#profilebutton").style.display = "";
 
-function LogOut(){
+        // Wire logout
+        document.querySelector("#logoutbutton").addEventListener("click", handleLogOut, false);
+    } else {
+        // Hide profile, mm, logout
+        document.querySelector("#loginbutton").style.display = "";
+        document.querySelector("#logoutbutton").style.display = "none";
+        document.querySelector("#profilebutton").style.display = "none";
+    }
+});
+
+// Logout
+function handleLogOut() {
     akaLogout();
-    console.log(fbIsLoggedIn); 
 }
