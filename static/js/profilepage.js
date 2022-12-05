@@ -9,7 +9,7 @@ akaAuthStateChanged((user) => {
 
     } else {
         // Go to login
-        window.location.href = "/";
+        window.location.href = "/login";
     }
 });
 
